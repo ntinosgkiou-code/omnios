@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OmniOS: make AI agents ask before they act</title>
+<meta name="description" content="Rules, four-eyes approvals, a signed append-only log and evidence a third party can verify offline. A draft, never used with a real customer; source-available.">
+<link rel="canonical" href="https://ntinosgkiou-code.github.io/omnios/">
+<meta property="og:title" content="OmniOS: make AI agents ask before they act">
+<meta property="og:description" content="Four-eyes approval for AI agents, and a record nobody can quietly edit. Draft, source-available.">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root { --bg:#ffffff; --ink:#0e1a2b; --mu:#5b6472; --ln:#d8dde6; --sf:#f4f6f9; --ac:#0b5fd1; --cd:#0d1117; --cdi:#c9d1d9; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0a111d; --ink:#e7ecf6; --mu:#93a0b6; --ln:#243350; --sf:#111b2c; --ac:#6aa8ff; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.65 system-ui, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 48px 20px 72px; }
+  h1 { font-size: 44px; line-height: 1.1; margin: 0 0 8px; letter-spacing: -0.02em; }
+  h1 span { color: var(--ac); }
+  h2 { font-size: 22px; margin: 42px 0 10px; }
+  .lead { font-size: 21px; color: var(--ink); margin: 6px 0 4px; }
+  .mu { color: var(--mu); }
+  a { color: var(--ac); }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; }
+  .btn { display: inline-block; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--ln); text-decoration: none; font-weight: 600; }
+  .btn.primary { background: var(--ac); color: #fff; border-color: var(--ac); }
+  pre { background: var(--cd); color: var(--cdi); padding: 14px 16px; border-radius: 10px; overflow-x: auto; font: 14.5px/1.55 ui-monospace, Consolas, monospace; }
+  img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--ln); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
+  .card { background: var(--sf); border: 1px solid var(--ln); border-radius: 12px; padding: 14px 16px; }
+  .card b { display: block; margin-bottom: 4px; }
+  .warn { background: var(--sf); border-left: 4px solid #d29922; padding: 12px 16px; border-radius: 6px; }
+  footer { margin-top: 48px; color: var(--mu); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>omni<span>os</span></h1>
+  <p class="lead"><b>Make AI agents ask before they act, and keep a record nobody can quietly edit.</b></p>
+  <p>Four-eyes approval for software agents, plus a black box that a third party can check without trusting you. The Gateway sits between an agent and the systems it acts on, applies <i>your</i> rules, waits for <i>named humans</i> when the rules say so, and writes every step to a signed, append-only log that an auditor verifies <i>offline</i>.</p>
+
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/ntinosgkiou-code/omnios">Source on GitHub</a>
+    <a class="btn" href="https://github.com/ntinosgkiou-code/omnios/blob/main/docs/KNOWN-LIMITS.md">Known limits</a>
+    <a class="btn" href="https://ntinosgkiou-code.github.io/agentdryrun/">agentdryrun (free, open)</a>
+  </div>
+
+  <p><img src="assets/demo.png" alt="Terminal output of python -m omnios demo, shortened: a payment that needs two different approvers, the agent unable to approve its own payment, a payment over the ceiling refused, a rule change that needs a second admin, an edited evidence pack that fails verification, and witnesses refusing a rewritten log"></p>
+  <p class="mu">Real output of <code>python -m omnios demo</code>, shortened. All data is invented.</p>
+
+  <h2>Try it</h2>
+  <pre>git clone https://github.com/ntinosgkiou-code/omnios &amp;&amp; cd omnios
+pip install -r requirements.txt
+python -m omnios demo</pre>
+  <p class="mu">Python 3.11 or 3.12. CI runs the 175 tests on Linux and Windows and builds the Docker image.</p>
+
+  <h2>What it does</h2>
+  <div class="grid">
+    <div class="card"><b>Decide</b>A JSON rules file per customer: allowed at once, needs N different people, or refused, with limits per day, week or month. The agent cannot approve itself and nobody counts twice.</div>
+    <div class="card"><b>Record</b>Every step is a record written before the action happens, in a signed Merkle-tree log, one per customer.</div>
+    <div class="card"><b>Prove</b>An evidence pack a third party checks offline. Witnesses on other servers refuse any checkpoint that rewrites the past.</div>
+  </div>
+
+  <h2>What it is not</h2>
+  <div class="warn">A <b>draft</b>: never run with a real agent, bank or customer, no external security review. Approvals are attested by the platform and not signed by the humans themselves. It does not stop prompt injection, certify anything or make you compliant with any regulation. All rights reserved: the source is published for reading and review. Read the <a href="https://github.com/ntinosgkiou-code/omnios/blob/main/docs/KNOWN-LIMITS.md">known limits</a> first.</div>
+
+  <footer>OmniOS is the original name of this project; the free local tool was renamed <a href="https://ntinosgkiou-code.github.io/agentdryrun/">agentdryrun</a> because OmniOS is also an unrelated operating system (omnios.org).</footer>
+</main>
+</body>
+</html>

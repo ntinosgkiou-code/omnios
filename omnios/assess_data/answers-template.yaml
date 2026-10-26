@@ -1,0 +1,49 @@
+# OmniOS Agent Control Check: answers file.  Fill it in with the client (about 60-90 minutes), then run:
+#   python -m omnios assess report --answers answers.yaml --out report/
+# Allowed values are listed in the comments. Leave a field out only if you truly do not know: unknown is scored as "no".
+
+client:
+  name: "CLIENT NAME"
+  industry: "finance operations"        # free text
+  size_employees: 40
+  regulated_customers: true             # do their customers, auditors, insurers or regulators oversee them?
+  trigger: ""                           # what prompted this check (a security review, an insurance renewal, an audit, an incident...)
+  deadline: ""                          # date of that trigger, if any
+  assessed_by: ""
+  date: ""
+
+agents:
+  - name: example-agent
+    purpose: "what the agent does, in one sentence"
+    framework: "n8n"                    # n8n | langchain | crewai | openai-agents | claude-agent-sdk | vendor-platform | custom | other
+    runs_in: "own cloud"                # own cloud | vendor cloud | client cloud | laptop
+    autonomy: "acts-then-reports"       # suggests | asks-first | acts-then-reports | fully-autonomous
+    credentials_held_by_agent: true     # does the agent's process hold the keys/passwords of the systems it acts on?
+    tools:
+      - name: payments.send
+        system: "bank API"
+        value_field: "amount_eur"       # the name of the amount in the tool's arguments, if it moves money
+        money: true
+        personal_data: false
+        external_effect: true           # does it reach a person or system outside the company?
+        reversible: "partly"            # yes | partly | no
+        max_value_eur: 5000             # the largest single value it can move today (0 if none)
+        human_approval_today: "none"    # none | native-hook | custom | separate-system
+        approvers_distinct: false       # does it need TWO different people today?
+        logged_where: "n8n execution history"
+        log_tamper_evident: false       # can anyone outside the team check the log was not edited?
+
+controls:                               # yes | partial | no
+  separation_of_duties: "no"            # nobody can request, approve and execute the same money movement
+  spend_limits: "no"                    # hard limits per action / per day, enforced outside the agent
+  kill_switch: "no"                     # a way to stop every agent within minutes
+  incident_process: "no"                # a written process for "the agent did something wrong"
+  key_rotation: "no"                    # agent and approver credentials are rotated and revocable
+  independent_log_verification: "no"    # someone outside the team can verify the records were not rewritten
+
+evidence_asked:
+  asked_by: []                          # any of: customer, auditor, insurer, regulator, board
+  what_was_shown: ""
+  outcome: ""                           # e.g. "accepted", "asked for more", "deal delayed"
+
+notes: ""

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "default_unknown_tool": "deny",
+  "tools": {
+    "refunds.issue": {
+      "description": "Refund a customer",
+      "permission": "refund:issue",
+      "reversibility": "two_way",
+      "risk": "low",
+      "escalate": [{"when": {"field": "amount_eur", "op": ">", "value": 100}, "reason": "Refund above 100 EUR needs a human"}],
+      "limits": [{"field": "amount_eur", "per": "day", "max": 1000, "on_exceed": "escalate"}],
+      "x_review": "TEMPLATE"
+    },
+    "credits.grant": {
+      "description": "Grant account credit",
+      "permission": "credit:grant",
+      "reversibility": "two_way",
+      "risk": "low",
+      "escalate": [{"when": {"field": "amount_eur", "op": ">", "value": 200}, "reason": "Credit above 200 EUR needs a human"}],
+      "x_review": "TEMPLATE"
+    },
+    "account.close": {
+      "description": "Close a customer account (permanent)",
+      "permission": "account:close",
+      "reversibility": "one_way_terminal",
+      "risk": "high",
+      "approvals": {"required": 2},
+      "x_review": "TEMPLATE"
+    },
+    "email.send": {
+      "description": "Send an email to a customer (cannot be recalled)",
+      "permission": "email:send",
+      "reversibility": "one_way_consequential",
+      "risk": "high",
+      "x_review": "TEMPLATE"
+    }
+  }
+}

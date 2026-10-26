@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "default_unknown_tool": "deny",
+  "tools": {
+    "payments.send": {
+      "description": "Pay a supplier invoice",
+      "permission": "finance:pay",
+      "reversibility": "one_way_recoverable",
+      "risk": "high",
+      "deny": [{"when": {"field": "amount_eur", "op": ">", "value": 10000}, "reason": "Above the ceiling of 10,000 EUR per payment"}],
+      "limits": [{"field": "amount_eur", "per": "day", "max": 15000, "on_exceed": "deny"}],
+      "approvals": {"required": 1, "extra": [{"when": {"field": "amount_eur", "op": ">", "value": 1000}, "required": 2}]},
+      "effect_key": [{"field": "vendor", "as": "vendor", "norm": "text"}, {"field": "amount_eur", "as": "amount_cents", "norm": "cents"}],
+      "x_review": "TEMPLATE: confirm ceilings and thresholds with the client"
+    },
+    "vendors.bank_details.change": {
+      "description": "Change a supplier's bank account (the classic fraud route)",
+      "permission": "finance:vendor-admin",
+      "reversibility": "one_way_consequential",
+      "risk": "high",
+      "approvals": {"required": 2},
+      "x_review": "TEMPLATE"
+    },
+    "invoices.mark_paid": {
+      "description": "Mark an invoice as paid in the books",
+      "permission": "finance:books",
+      "reversibility": "two_way",
+      "risk": "low",
+      "x_review": "TEMPLATE"
+    }
+  }
+}

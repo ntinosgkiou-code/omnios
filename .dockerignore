@@ -1,0 +1,9 @@
+.git
+.github
+tests
+docs
+__pycache__
+*.pyc
+.venv
+omnios-data
+data

@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "default_unknown_tool": "deny",
+  "tools": {
+    "email.send_reminder": {
+      "description": "Send a payment reminder to a debtor",
+      "permission": "collections:remind",
+      "reversibility": "one_way_recoverable",
+      "risk": "low",
+      "escalate": [
+        {"when": {"field": "amount_eur", "op": ">", "value": 5000}, "reason": "Reminder about more than 5,000 EUR needs a human"},
+        {"when": {"field": "days_overdue", "op": ">", "value": 90}, "reason": "More than 90 days overdue needs a human"},
+        {"when": {"field": "message", "op": "contains", "value": "legal"}, "reason": "Legal wording needs a human"}
+      ],
+      "approvals": {"required": 1},
+      "x_review": "TEMPLATE: thresholds and wording rules to be agreed with the client's collections policy"
+    },
+    "payment_plan.offer": {
+      "description": "Offer a debtor a payment plan or a discount",
+      "permission": "collections:offer",
+      "reversibility": "one_way_recoverable",
+      "risk": "high",
+      "deny": [{"when": {"field": "discount_pct", "op": ">", "value": 40}, "reason": "Discount above 40% is never offered by an agent"}],
+      "approvals": {"required": 1, "extra": [{"when": {"field": "discount_pct", "op": ">", "value": 10}, "required": 2}]},
+      "x_review": "TEMPLATE: the discount authority matrix must come from the client"
+    },
+    "debt.write_off": {
+      "description": "Write off a debt",
+      "permission": "collections:writeoff",
+      "reversibility": "one_way_consequential",
+      "risk": "high",
+      "approvals": {"required": 2},
+      "x_review": "TEMPLATE"
+    },
+    "dispute.escalate": {
+      "description": "Hand a dispute to a person",
+      "permission": "collections:escalate",
+      "reversibility": "two_way",
+      "risk": "low",
+      "x_review": "TEMPLATE"
+    },
+    "crm.note.add": {
+      "description": "Add a note in the CRM",
+      "permission": "crm:write",
+      "reversibility": "two_way",
+      "risk": "low",
+      "x_review": "TEMPLATE"
+    }
+  }
+}

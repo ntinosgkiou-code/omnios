@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security problem or a conduct issue (private)
+    url: https://github.com/ntinosgkiou-code/omnios/security/advisories/new
+    about: Goes only to the maintainer. Use it for a verifier bypass or to report conduct privately.

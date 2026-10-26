@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+build/
+dist/
+*.egg-info/
+omnios-data/
+data/
+*.key
+secrets.json
+witness_state.json
+witness/
+handover/
+report/
+reports/
+.env
+*.zip

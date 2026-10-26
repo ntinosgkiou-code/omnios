@@ -1,0 +1,14 @@
+Copyright (c) 2026 ntinosgkiou-code. All rights reserved.
+
+This source code is published for reading, evaluation, security review and discussion.
+No permission is granted to use it in production, to copy it, to modify it, to distribute it
+or to offer it as a service, except as the GitHub Terms of Service allow for viewing and forking
+a public repository on GitHub itself.
+
+This is a deliberate choice for now, not an oversight: a license that is granted cannot be taken
+back, and the commercial terms are not settled. To ask for permission, open an issue titled
+"license" in this repository.
+
+The verifier, the witness service and the rules language that check evidence produced by this
+software are published separately under the Apache License 2.0:
+https://github.com/ntinosgkiou-code/agentdryrun

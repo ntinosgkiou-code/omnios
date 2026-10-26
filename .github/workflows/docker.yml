@@ -1,0 +1,20 @@
+name: docker
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: build the image
+        run: docker build -t omnios:ci .
+      - name: smoke test: it starts and answers /health
+        run: |
+          docker run -d --name omnios -p 8000:8000 -v "$RUNNER_TEMP/omnios-data:/data" omnios:ci
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health; then echo; exit 0; fi
+            sleep 1
+          done
+          docker logs omnios
+          exit 1

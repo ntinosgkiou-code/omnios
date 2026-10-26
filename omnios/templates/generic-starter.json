@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "default_unknown_tool": "deny",
+  "tools": {
+    "note.add": {
+      "description": "Add a note (reversible, low risk): the smallest possible tool, to prove the wiring",
+      "permission": "notes:write",
+      "reversibility": "two_way",
+      "risk": "low",
+      "x_review": "STARTER: replace with the client's real tools (see the Agent Control Check draft rules)"
+    }
+  }
+}

@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OmniOS</title>
+<style>
+:root{--bg:#f4f6f9;--sf:#fff;--ink:#0e1a2b;--mu:#5b6472;--ln:#d8dde6;--ac:#2347a8;--acs:#e6ecfb;--ok:#17693f;--oks:#e3f4ea;--wn:#8a4700;--wns:#fcefdc;--er:#9b2226;--ers:#fbe7e8;--code:#0f1b2e;--codeink:#dce6fa;--r:10px}
+@media(prefers-color-scheme:dark){:root{--bg:#0a111d;--sf:#111b2c;--ink:#e7ecf6;--mu:#93a0b6;--ln:#243350;--ac:#a9c0ff;--acs:#1a2744;--ok:#6fd39d;--oks:#13301f;--wn:#f0b35e;--wns:#33250f;--er:#f29a9d;--ers:#3a1517;--code:#070d18;--codeink:#c9d6f2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,'Segoe UI',Roboto,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+header{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--ln);position:sticky;top:0;z-index:5}
+.logo{font-weight:800;letter-spacing:.02em;font-size:18px}
+.logo small{font-weight:500;color:var(--mu);margin-left:8px;font-size:13px}
+.sp{flex:1}
+nav{display:flex;gap:4px;flex-wrap:wrap;padding:8px 16px;background:var(--sf);border-bottom:1px solid var(--ln)}
+nav button{border:0;background:none;padding:8px 14px;border-radius:8px;cursor:pointer;color:var(--mu);font-weight:600}
+nav button.on{background:var(--acs);color:var(--ac)}
+main{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:24px 0 8px}h3{font-size:14px;margin:16px 0 6px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:14px 16px}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.kpi b{display:block;font-size:26px;line-height:1.2}.kpi span{color:var(--mu);font-size:13px}
+.mu{color:var(--mu)}.small{font-size:13px}.mono{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;word-break:break-all}.idc{white-space:nowrap;word-break:normal}
+.chip{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;font-weight:700;white-space:normal;max-width:190px}
+.s-warn{background:var(--wns);color:var(--wn)}.s-ac{background:var(--acs);color:var(--ac)}.s-ok{background:var(--oks);color:var(--ok)}.s-er{background:var(--ers);color:var(--er)}.s-mu{background:var(--bg);color:var(--mu);border:1px solid var(--ln)}
+.btn{border:1px solid var(--ln);background:var(--sf);padding:7px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--ac)}.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}.btn.er{background:var(--er);border-color:var(--er);color:#fff}.btn[disabled]{opacity:.45;cursor:not-allowed}
+@media(prefers-color-scheme:dark){.btn.pri,.btn.ok,.btn.er{color:#06101f}}
+input,select,textarea{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:7px 10px;width:100%}
+textarea{font-family:ui-monospace,Consolas,monospace;font-size:13px;min-height:130px}
+label{display:block;font-size:13px;color:var(--mu);margin:10px 0 3px}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--ln);padding:7px 8px;text-align:left;vertical-align:top}th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mu)}
+tr.row{cursor:pointer}tr.row:hover td{background:var(--acs)}tr.sel td{background:var(--acs)}
+pre{background:var(--code);color:var(--codeink);padding:12px;border-radius:8px;overflow:auto;font-size:12.5px;margin:6px 0;max-height:320px}
+.split{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:14px;align-items:start}@media(max-width:860px){.split{grid-template-columns:1fr}}
+.help{background:var(--acs);border:1px solid var(--ln);border-radius:var(--r);padding:10px 14px;margin:0 0 14px}.help summary{cursor:pointer;font-weight:700;color:var(--ac)}.help p{margin:8px 0 0}
+.tw{overflow-x:auto}.bar{display:flex;gap:4px;margin:6px 0}.bar i{flex:1;height:8px;border-radius:4px;background:var(--ln)}.bar i.f{background:var(--ok)}
+.tl{margin:0;padding-left:18px}.tl li{margin:3px 0}
+.check{display:flex;gap:8px;margin:4px 0;align-items:flex-start}.check b{width:18px;text-align:center}.c-ok b{color:var(--ok)}.c-er b{color:var(--er)}.c-na b{color:var(--wn)}
+.toast{position:fixed;right:14px;bottom:14px;max-width:420px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:20;box-shadow:0 6px 24px #0005}
+.login{max-width:520px;margin:8vh auto;padding:0 16px}
+.demo{display:flex;gap:6px;flex-wrap:wrap}.demo button{padding:4px 10px;font-size:13px}
+.warnbox{background:var(--wns);color:var(--wn);border-radius:8px;padding:8px 12px;font-size:13px;margin:8px 0}
+.keybox{background:var(--oks);color:var(--ok);border-radius:8px;padding:10px 12px;margin:8px 0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast" style="display:none"></div>
+<script>
+"use strict";
+/* ───────────── texts (Greek first, English toggle) ───────────── */
+const I = {
+el: {
+ appsub:"φύλακας και απόδειξη για AI agents", login:"Σύνδεση", keyph:"Κλειδί API (ogk_...)", enter:"Είσοδος", logout:"Έξοδος",
+ loginhelp:"Το κλειδί σου καθορίζει ποιος είσαι και τι μπορείς να κάνεις. Δεν γράφεται πουθενά στον server: μένει στον browser αυτής της καρτέλας.",
+ demokeys:"Demo: διάλεξε ρόλο", t_over:"Επισκόπηση", t_act:"Αιτήματα", t_led:"Αποδείξεις", t_rules:"Κανόνες και αλλαγές", t_guide:"Πώς δουλεύει", t_obs:"Παρατήρηση",
+ role_agent:"agent (ο AI)", role_approver:"εγκρίνων", role_admin:"admin", role_auditor:"ελεγκτής",
+ tenant:"Πελάτης", profile:"Προφίλ", quorum:"Admins για αλλαγές", policy:"Κανόνες (έκδοση)", ledger:"Τετράδιο (records)", witnessed:"Επιβεβαιωμένο από μάρτυρες",
+ nowit:"κανένας μάρτυρας ακόμα", pendingchg:"Αλλαγές σε αναμονή", people:"Άνθρωποι και κλειδιά", actions:"Αιτήματα",
+ hint_over:"Εδώ βλέπεις την εικόνα του πελάτη: ποιοι κανόνες ισχύουν, πόσα αιτήματα περιμένουν, πόσες εγγραφές έχει το τετράδιο και ποιοι μάρτυρες το έχουν δει. Το «τετράδιο» είναι το αρχείο που δεν πειράζεται κρυφά.",
+ todo:"Τι να κάνεις τώρα", todo_approver:"Έχεις {n} αιτήματα που περιμένουν έγκριση. Πήγαινε στα Αιτήματα.", todo_agent:"Ως agent προτείνεις ενέργειες. Πήγαινε στα Αιτήματα και πάτα «Νέο αίτημα».", todo_admin:"Ως admin προτείνεις αλλαγές στους κανόνες και στα κλειδιά. Χρειάζεται δεύτερος admin για να εφαρμοστούν.", todo_auditor:"Ως ελεγκτής διαβάζεις και ελέγχεις. Πήγαινε στις Αποδείξεις.", nothing:"Τίποτα σε αναμονή.",
+ hint_act:"Κάθε ενέργεια που θέλει να κάνει ο agent περνά από εδώ. Οι κανόνες αποφασίζουν: επιτρέπεται αμέσως, χρειάζεται ανθρώπους, ή απορρίπτεται. Ο agent δεν μπορεί να εγκρίνει τον εαυτό του και ο ίδιος άνθρωπος δεν εγκρίνει δύο φορές.",
+ newreq:"Νέο αίτημα (agent)", tool:"Εργαλείο", params:"Παράμετροι (JSON)", send:"Στείλε", filter:"Φίλτρο", all:"Όλα", none:"Δεν υπάρχουν αιτήματα.", pick:"Διάλεξε ένα αίτημα από τη λίστα.",
+ agent:"Agent", risk:"Κίνδυνος", reversib:"Αναστρεψιμότητα", mode:"Τρόπος", created:"Δημιουργήθηκε", policyhash:"Κανόνες (hash)", reasons:"Γιατί", approvals:"Εγκρίσεις", of:"από", comment:"Σχόλιο (προαιρετικό)",
+ approve:"Έγκριση", reject:"Απόρριψη", reportok:"Ο agent το έκανε (αναφορά επιτυχίας)", reportfail:"Ο agent απέτυχε", undo:"Αναίρεση", history:"Ιστορικό", evidence:"Αποδείξεις αυτού του αιτήματος", loadev:"Φόρτωσε αποδείξεις", verify:"Έλεγχος στον browser",
+ pinned:"Κλειδί του log που πήρες από αλλού (προαιρετικό, αλλιώς δεν είναι πραγματικός έλεγχος)", vtitle:"Αποτέλεσμα ελέγχου",
+ vnote:"Αυτός ο έλεγχος τρέχει στον browser σου: ξαναϋπολογίζει τα hashes και την απόδειξη συμμετοχής. Αν δεν δώσεις κλειδί που πήρες από άλλη διαδρομή, το κλειδί προέρχεται από τον ίδιο server και δεν αποδεικνύει ποιος τον τρέχει.",
+ hint_led:"Το τετράδιο καταγράφει κάθε βήμα με hash. Κάθε εγγραφή δεσμεύεται στην προηγούμενη και όλες μαζί σε ένα δέντρο, και η ρίζα υπογράφεται. Μάρτυρες σε άλλους servers θυμούνται τη ρίζα, οπότε το παρελθόν δεν ξαναγράφεται απαρατήρητο.",
+ integrity:"Έλεγχος ακεραιότητας", dlbundle:"Κατέβασε πακέτο αποδείξεων (zip)", records:"Πρόσφατες εγγραφές", root:"Ρίζα", size:"Μέγεθος", seq:"α/α", type:"Τύπος", time:"Ώρα", body:"Κείμενο εγγραφής",
+ hint_rules:"Οι κανόνες λένε ποιες ενέργειες επιτρέπονται, με ποια όρια και πόσους ανθρώπους θέλουν. Η αλλαγή τους (και η δημιουργία κλειδιών) γίνεται με πρόταση από έναν admin και έγκριση από άλλον. Έτσι κανείς δεν μπορεί να χαλαρώσει τους κανόνες μόνος του.",
+ tools:"Εργαλεία στους κανόνες", perm:"Δικαίωμα", reqapp:"Εγκρίσεις", changes:"Αλλαγές", nochg:"Καμία αλλαγή.", proposer:"Πρότεινε", status:"Κατάσταση", propkey:"Πρόταση νέου κλειδιού", name:"Όνομα", role:"Ρόλος", groups:"Ομάδες (κόμμα)", perms:"Δικαιώματα (κόμμα, για agent)", propose:"Πρόταση", proppol:"Πρόταση νέων κανόνων", validate:"Έλεγχος κανόνων", valid:"Οι κανόνες είναι έγκυροι.", keyonce:"Το κλειδί φαίνεται ΜΙΑ φορά. Μένει ανενεργό μέχρι να εγκριθεί η αλλαγή:", principals:"Άνθρωποι και agents",
+ hint_guide:"Η ιστορία σε έξι βήματα, με τους ρόλους.", g1t:"1. Ο agent ζητά", g1:"Ο AI agent θέλει να κάνει κάτι (π.χ. πληρωμή). Δεν το κάνει μόνος του: το προτείνει στον φύλακα.",
+ g2t:"2. Οι κανόνες κρίνουν", g2:"Οι κανόνες του πελάτη αποφασίζουν: επιτρέπεται, χρειάζεται 1 ή 2 άνθρωποι, ή απορρίπτεται (π.χ. πάνω από το ταβάνι). Αν λείπει ή δεν διαβάζεται ένα στοιχείο, ρωτάει άνθρωπο.",
+ g3t:"3. Άνθρωποι εγκρίνουν", g3:"Δύο διαφορετικοί εγκρίνοντες, ποτέ ο agent, ποτέ ο ίδιος δύο φορές. Οι όροι ξαναελέγχονται τη στιγμή της έγκρισης.",
+ g4t:"4. Εκτελείται", g4:"Είτε ο φύλακας κάνει την κλήση με τα κλειδιά του πελάτη (proxy), είτε ο agent προχωρά και αναφέρει το αποτέλεσμα (decision mode).",
+ g5t:"5. Γράφεται απόδειξη", g5:"Κάθε βήμα γράφεται σε υπογεγραμμένο τετράδιο ΠΡΙΝ γίνει η ενέργεια. Αν δεν γράφεται, δεν γίνεται τίποτα.",
+ g6t:"6. Μάρτυρες και έλεγχος", g6:"Ανεξάρτητοι μάρτυρες θυμούνται τη ρίζα. Ο ελεγκτής παίρνει ένα zip και το ελέγχει offline, με κλειδιά που πήρε από αλλού.",
+ g7t:"Τι ΔΕΝ κάνει", g7:"Δεν σταματά prompt injection. Δεν αποδεικνύει ότι οι αποφάσεις ήταν σωστές. Οι εγκρίσεις είναι δηλωμένες από την πλατφόρμα και δεν υπογράφονται ακόμα από τον ίδιο τον άνθρωπο.",
+ hint_obs:"Λειτουργία παρατήρησης: το σύστημά σου αναφέρει τι κάνει ο agent και οι κανόνες λένε τι ΘΑ είχαν αποφασίσει. Δεν μπλοκάρεται τίποτα και δεν εκτελείται τίποτα. Βλέπεις πού θα σε σταματούσαν οι κανόνες πριν τους βάλεις να σταματούν πραγματικά.",
+ obs_total:"αναφορές ενεργειών", obs_allow:"θα περνούσαν", obs_pend:"θα ζητούσαν έγκριση", obs_deny:"θα απορρίπτονταν", obs_none:"Καμία αναφορά ακόμα. Ο agent τις στέλνει με το SDK (@gw.observed) ή εισάγεις ένα αρχείο με την εντολή «observe import».",
+ obs_share:"των ενεργειών δεν θα περνούσαν αυτόματα με αυτούς τους κανόνες", obs_unmapped:"Εργαλεία του agent που δεν υπάρχουν στους κανόνες", obs_bytool:"Ανά εργαλείο", obs_why:"Γιατί δεν περνούν", obs_first:"Δες πρώτα αυτά",
+ obs_verdict:"Κρίση", obs_when:"Πότε", obs_report:"Άνοιξε την αναφορά (HTML)", obs_allowed:"Περνούν", obs_wait:"Έγκριση", obs_refused:"Απορρίπτονται", obs_unread:"ενέργειες με στοιχείο που έλειπε ή δεν ήταν καθαρός αριθμός (πάνε σε άνθρωπο)",
+ obs_limits:"Τι είναι και τι δεν είναι. Βασίζεται μόνο σε ό,τι αναφέρει το δικό σου σύστημα: ό,τι δεν αναφέρεται δεν φαίνεται. Οι κρίσεις είναι προσομοίωση με τους κανόνες που ισχύουν (ίσως πρόχειρους). Δεν σταμάτησε τίποτα. Δεν λέει αν οι ενέργειες ήταν σωστές.",
+ obs_send:"Αναφορά ενέργειας (agent)", obs_sent:"Καταγράφηκε", obs_mine:"Οι αναφορές μου",
+ ok:"έγινε", err:"Σφάλμα", copy:"Αντιγραφή", lang:"EN", hashes:"hash"
+},
+en: {
+ appsub:"gatekeeper and proof for AI agents", login:"Sign in", keyph:"API key (ogk_...)", enter:"Enter", logout:"Sign out",
+ loginhelp:"Your key decides who you are and what you may do. It is not stored on the server: it stays in this tab's browser.",
+ demokeys:"Demo: pick a role", t_over:"Overview", t_act:"Requests", t_led:"Evidence", t_rules:"Rules and changes", t_guide:"How it works", t_obs:"Observe",
+ role_agent:"agent (the AI)", role_approver:"approver", role_admin:"admin", role_auditor:"auditor",
+ tenant:"Customer", profile:"Profile", quorum:"Admins needed for changes", policy:"Rules (version)", ledger:"Ledger (records)", witnessed:"Confirmed by witnesses",
+ nowit:"no witness yet", pendingchg:"Changes waiting", people:"People and keys", actions:"Requests",
+ hint_over:"The customer's picture: which rules apply, how many requests are waiting, how many records the ledger holds and which witnesses have seen it. The ledger is the record that cannot be edited quietly.",
+ todo:"What to do now", todo_approver:"You have {n} requests waiting for approval. Go to Requests.", todo_agent:"As the agent you propose actions. Go to Requests and press New request.", todo_admin:"As admin you propose changes to rules and keys. A second admin must approve them.", todo_auditor:"As auditor you read and verify. Go to Evidence.", nothing:"Nothing waiting.",
+ hint_act:"Every action the agent wants to take comes through here. The rules decide: allowed at once, needs humans, or refused. The agent cannot approve itself and the same person cannot approve twice.",
+ newreq:"New request (agent)", tool:"Tool", params:"Parameters (JSON)", send:"Send", filter:"Filter", all:"All", none:"No requests.", pick:"Pick a request from the list.",
+ agent:"Agent", risk:"Risk", reversib:"Reversibility", mode:"Mode", created:"Created", policyhash:"Rules (hash)", reasons:"Why", approvals:"Approvals", of:"of", comment:"Comment (optional)",
+ approve:"Approve", reject:"Reject", reportok:"The agent did it (report success)", reportfail:"The agent failed", undo:"Undo", history:"History", evidence:"Evidence for this request", loadev:"Load evidence", verify:"Verify in the browser",
+ pinned:"Log key you got another way (optional; without it this is not a real check)", vtitle:"Check result",
+ vnote:"This check runs in your browser: it recomputes the hashes and the inclusion proof. Unless you give a key obtained another way, the key comes from the same server and does not prove who runs it.",
+ hint_led:"The ledger records every step with a hash. Each record is bound to the previous one and all together to a tree whose root is signed. Witnesses on other servers remember the root, so the past cannot be rewritten unnoticed.",
+ integrity:"Integrity check", dlbundle:"Download evidence bundle (zip)", records:"Latest records", root:"Root", size:"Size", seq:"#", type:"Type", time:"Time", body:"Record text",
+ hint_rules:"The rules say which actions are allowed, with which limits and how many people they need. Changing them (and creating keys) is done by one admin proposing and another approving, so nobody can loosen the rules alone.",
+ tools:"Tools in the rules", perm:"Permission", reqapp:"Approvals", changes:"Changes", nochg:"No changes.", proposer:"Proposed by", status:"Status", propkey:"Propose a new key", name:"Name", role:"Role", groups:"Groups (comma)", perms:"Permissions (comma, for agent)", propose:"Propose", proppol:"Propose new rules", validate:"Validate rules", valid:"The rules are valid.", keyonce:"The key is shown ONCE. It stays inactive until the change is approved:", principals:"People and agents",
+ hint_guide:"The story in six steps, with the roles.", g1t:"1. The agent asks", g1:"The AI agent wants to do something (say, a payment). It does not do it alone: it proposes it to the gatekeeper.",
+ g2t:"2. The rules judge", g2:"The customer's rules decide: allowed, needs 1 or 2 people, or refused (say, above the ceiling). If a needed field is missing or unreadable, a human is asked.",
+ g3t:"3. People approve", g3:"Two different approvers, never the agent, never the same person twice. The conditions are re-checked at approval time.",
+ g4t:"4. It runs", g4:"Either the gatekeeper makes the call with the customer's credentials (proxy), or the agent proceeds and reports the result (decision mode).",
+ g5t:"5. Proof is written", g5:"Every step is written to a signed ledger BEFORE the action happens. If it cannot be written, nothing happens.",
+ g6t:"6. Witnesses and checking", g6:"Independent witnesses remember the root. The auditor takes a zip and checks it offline, with keys obtained elsewhere.",
+ g7t:"What it does NOT do", g7:"It does not stop prompt injection. It does not prove the decisions were right. Approvals are attested by the platform and not yet signed by the human.",
+ hint_obs:"Observe mode: your system reports what the agent does and the rules say what they WOULD have decided. Nothing is blocked and nothing is executed. You see where the rules would stop you before you let them stop anything for real.",
+ obs_total:"reported actions", obs_allow:"would pass", obs_pend:"would need approval", obs_deny:"would be refused", obs_none:"Nothing reported yet. The agent sends events with the SDK (@gw.observed), or you import a file with the 'observe import' command.",
+ obs_share:"of the actions would not pass automatically under these rules", obs_unmapped:"Tools the agent uses that are not in the rules", obs_bytool:"By tool", obs_why:"Why they did not pass", obs_first:"Look at these first",
+ obs_verdict:"Verdict", obs_when:"When", obs_report:"Open the report (HTML)", obs_allowed:"Pass", obs_wait:"Approval", obs_refused:"Refused", obs_unread:"actions with a missing field or a value that is not a clean number (sent to a human)",
+ obs_limits:"What this is and is not. It is based only on what your own system reports: what is not reported is not seen. The verdicts are a simulation under the rules in force (which may be a first draft). Nothing was stopped. It does not say whether the actions were right.",
+ obs_send:"Report an action (agent)", obs_sent:"Recorded", obs_mine:"My reports",
+ ok:"done", err:"Error", copy:"Copy", lang:"ΕΛ", hashes:"hash"
+}};
+const STATUS = {PENDING_APPROVAL:["s-warn","αναμονή έγκρισης","waiting for approval"],APPROVED:["s-ac","εγκρίθηκε","approved"],EXECUTED:["s-ok","εκτελέστηκε","executed"],REPORTED_SUCCESS:["s-ok","αναφέρθηκε επιτυχία","success reported"],
+ DENIED:["s-er","απορρίφθηκε από κανόνες","denied by rules"],REJECTED:["s-er","απορρίφθηκε από άνθρωπο","rejected by human"],FAILED:["s-er","απέτυχε","failed"],REPORTED_FAILURE:["s-er","αναφέρθηκε αποτυχία","failure reported"],
+ EXPIRED:["s-mu","έληξε","expired"],COMPENSATED:["s-mu","αναιρέθηκε","undone"],EXECUTING:["s-warn","εκτελείται","running"]};
+
+/* ───────────── state and helpers ───────────── */
+let lang = "el"; try{ lang = localStorage.getItem("omnios_lang") || ((navigator.language||"el").startsWith("en") ? "en" : "el"); }catch(e){}
+const S = {key:null, me:null, ov:null, pol:null, acts:[], sel:null, selData:null, ev:null, vres:null, tab:"over", filter:"", demo:[], recs:null, integ:null, chg:null, princ:null, newKey:null, polText:null, obs:null, obsMine:null};
+const t = k => (I[lang][k] ?? I.el[k] ?? k);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = sec => sec ? new Date(sec*1000).toLocaleString(lang==="el"?"el-GR":"en-GB") : "";
+const short = (h,n=10) => h ? String(h).slice(0,n)+"…" : "";
+const stat = s => { const v = STATUS[s] || ["s-mu",s,s]; return `<span class="chip ${v[0]}">${esc(lang==="el"?v[1]:v[2])}</span>`; };
+const roleName = r => t("role_"+r);
+function toast(msg, bad){ const el=document.getElementById("toast"); el.textContent=msg; el.style.display="block"; el.style.background = bad ? "var(--er)" : "var(--ink)"; clearTimeout(toast.t); toast.t=setTimeout(()=>el.style.display="none", bad?7000:3000); }
+async function api(path, opt={}){
+  const h = Object.assign({"Accept":"application/json"}, opt.headers||{}); if(S.key) h["X-API-Key"]=S.key;
+  let body; if(opt.json!==undefined){ h["Content-Type"]="application/json"; body=JSON.stringify(opt.json); }
+  const r = await fetch(path, {method:opt.method||(body?"POST":"GET"), headers:h, body});
+  if(opt.blob && r.ok) return r.blob();
+  let d=null; try{ d=await r.json(); }catch(e){}
+  if(!r.ok){ const det=d&&d.detail; const msg = det ? (typeof det==="string"?det:(det.code? det.code+(det.detail?": "+det.detail:""):JSON.stringify(det))) : "HTTP "+r.status; const e=new Error(msg); e.status=r.status; throw e; }
+  return d;
+}
+async function act(fn){ try{ await fn(); }catch(e){ if(e.status===401){ logout(); } toast(t("err")+": "+e.message, true); } }
+
+/* ───────────── login ───────────── */
+async function tryDemo(){ try{ const r=await fetch("/ui/demo-keys"); if(r.ok){ S.demo=(await r.json()).keys||[]; } }catch(e){} }
+async function login(key){
+  S.key = key.trim();
+  try{ S.me = await api("/v1/me"); try{ sessionStorage.setItem("omnios_key", S.key); }catch(e){} S.sel=null; S.selData=null; S.ev=null; S.vres=null; S.newKey=null; S.integ=null; S.recs=null; S.chg=null; S.princ=null;
+       S.obs=null; S.obsMine=null; if(!["over","act","led","rules","obs","guide"].includes(S.tab)) S.tab="over"; await refresh(); }
+  catch(e){ S.key=null; S.me=null; toast(t("err")+": "+e.message, true); render(); }
+}
+function logout(){ S.key=null; S.me=null; try{ sessionStorage.removeItem("omnios_key"); }catch(e){} render(); }
+
+async function refresh(){
+  const p = [api("/v1/overview"), api("/v1/policy"), api("/v1/actions?limit=200"+(S.filter?"&status="+S.filter:""))];
+  const [ov,pol,acts] = await Promise.all(p);
+  S.ov=ov; S.pol=pol; S.acts=acts.actions||[];
+  if(S.sel){ try{ S.selData = await api("/v1/actions/"+S.sel); }catch(e){ S.selData=null; } }
+  if(S.tab==="led") await loadLedger(true);
+  if(S.tab==="rules") await loadRules(true);
+  if(S.tab==="obs") await loadObs(true);
+  render();
+}
+async function loadLedger(skipRender){
+  const size = S.ov.ledger.records, start = Math.max(0,size-60);
+  if(["approver","admin","auditor"].includes(S.me.role)) S.recs = await api("/v1/audit/records?start="+start+"&limit=60");
+  if(!skipRender) render();
+}
+async function loadRules(skipRender){
+  if(["admin","auditor"].includes(S.me.role)){ S.chg=(await api("/v1/changes")).changes; S.princ=(await api("/v1/principals")).principals; }
+  if(S.polText===null) S.polText = JSON.stringify(S.pol.policy,null,2);
+  if(!skipRender) render();
+}
+
+async function loadObs(skipRender){
+  if(S.me.role==="agent") S.obsMine = (await api("/v1/observe?limit=50")).observed;
+  else S.obs = await api("/v1/observe/report");
+  if(!skipRender) render();
+}
+async function openObsReport(){ const w=window.open("about:blank","_blank"); await act(async()=>{ try{ const b=await api("/v1/observe/report.html",{blob:true}); const u=URL.createObjectURL(b); if(w) w.location=u; else window.open(u,"_blank"); }catch(e){ if(w) w.close(); throw e; } }); }
+const OBS_SAMPLE = {"payments.send":'{"vendor":"Delta Supplies","amount_eur":4000}',"refunds.issue":'{"customer":"C-9","amount_eur":250}',"email.send":'{"to":"customer@example.com"}'};
+async function sendObs(){
+  let params; try{ params=JSON.parse(document.getElementById("otparams").value||"{}"); }catch(e){ return toast("JSON: "+e.message,true); }
+  await act(async()=>{ const r=await api("/v1/observe",{json:{events:[{tool:document.getElementById("ottool").value.trim(), params}]}}); toast(t("obs_sent")+": "+r.observed[0].decision); await loadObs(); });
+}
+function fillObsSample(){ const el=document.getElementById("ottool"), p=document.getElementById("otparams"); if(el&&p&&OBS_SAMPLE[el.value]) p.value=OBS_SAMPLE[el.value]; }
+
+/* ───────────── actions ───────────── */
+async function pick(id){ S.sel=id; S.ev=null; S.vres=null; await act(async()=>{ S.selData = await api("/v1/actions/"+id); render(); }); }
+async function decide(kind){
+  const comment = (document.getElementById("cmt")||{}).value||"";
+  await act(async()=>{ await api("/v1/actions/"+S.sel+"/"+kind, {json:{comment}}); toast(t("ok")); S.ev=null; S.vres=null; await refresh(); });
+}
+async function report(ok){ await act(async()=>{ await api("/v1/actions/"+S.sel+"/report", {json:{ok, response:{note:"reported from the UI"}}}); toast(t("ok")); await refresh(); }); }
+async function undo(){ await act(async()=>{ await api("/v1/actions/"+S.sel+"/report", {json:{ok:true,kind:"compensation"}}); toast(t("ok")); await refresh(); }); }
+async function compensateProxy(){ await act(async()=>{ await api("/v1/actions/"+S.sel+"/compensate", {method:"POST"}); toast(t("ok")); await refresh(); }); }
+async function newRequest(){
+  let params; try{ params=JSON.parse(document.getElementById("nparams").value||"{}"); }catch(e){ return toast("JSON: "+e.message,true); }
+  await act(async()=>{ const a=await api("/v1/actions",{json:{tool:document.getElementById("ntool").value, params}}); toast(t("ok")); S.sel=a.id; S.ev=null; S.vres=null; await refresh(); });
+}
+const SAMPLE = {"payments.send":'{"vendor":"Delta Supplies","amount_eur":4000}',"vendors.bank_details.change":'{"vendor":"Delta Supplies","iban":"GR00 0000 0000"}',"invoices.mark_paid":'{"invoice":"INV-1042"}',"refunds.issue":'{"customer":"C-9","amount_eur":250}',"account.close":'{"customer":"C-9"}',"email.send":'{"to":"customer@example.com"}'};
+function fillSample(){ const el=document.getElementById("ntool"), p=document.getElementById("nparams"); if(el&&p) p.value=SAMPLE[el.value]||"{}"; }
+
+/* ───────────── evidence + browser verification ───────────── */
+async function loadEvidence(){ await act(async()=>{ S.ev = await api("/v1/audit/evidence/"+S.sel); S.vres=null; render(); }); }
+const enc = new TextEncoder();
+const cat = (...a) => { let n=0; a.forEach(x=>n+=x.length); const o=new Uint8Array(n); let i=0; a.forEach(x=>{o.set(x,i); i+=x.length;}); return o; };
+const sha = async u8 => new Uint8Array(await crypto.subtle.digest("SHA-256", u8));
+const hex = u => [...u].map(b=>b.toString(16).padStart(2,"0")).join("");
+const unhex = s => Uint8Array.from((s.match(/../g)||[]).map(h=>parseInt(h,16)));
+const unb64 = s => Uint8Array.from(atob(s), c=>c.charCodeAt(0));
+const eq = (a,b) => a.length===b.length && a.every((x,i)=>x===b[i]);
+async function verifyInclusion(leaf, index, size, proof, root){
+  if(!(index>=0 && index<size)) return false;
+  let fn=index, sn=size-1, r=leaf;
+  for(const p of proof){
+    if(sn===0) return false;
+    if((fn&1) || fn===sn){ r = await sha(cat(Uint8Array.of(1), p, r)); if(!(fn&1)){ while(!(fn&1) && fn!==0){ fn>>=1; sn>>=1; } } }
+    else { r = await sha(cat(Uint8Array.of(1), r, p)); }
+    fn>>=1; sn>>=1;
+  }
+  return sn===0 && eq(r,root);
+}
+async function verifyEvidence(){
+  const ev=S.ev, out=[], pin=(document.getElementById("pin")||{}).value?.trim();
+  const add=(ok,msg)=>out.push({ok,msg});
+  const cp=ev.checkpoint; const root=unb64(cp.root), size=ev.size;
+  const note=cp.note, i=note.indexOf("\n\n"), body=note.slice(0,i+1);
+  const lines=body.split("\n");
+  add(lines[1]==String(size) && lines[2]===cp.root, lang==="el"?"Το checkpoint δηλώνει μέγεθος "+size+" και τη ρίζα που βλέπεις":"The checkpoint states size "+size+" and the root shown");
+  for(const r of ev.records){
+    const raw=enc.encode(r.body); const leaf=await sha(cat(Uint8Array.of(0), raw));
+    add(hex(leaf)===r.leaf, (lang==="el"?"Εγγραφή ":"Record ")+r.seq+" ("+r.type+"): "+(lang==="el"?"το κείμενο δίνει το hash που περιέχει το δέντρο":"the text hashes to the leaf in the tree"));
+    const ok=await verifyInclusion(leaf, r.seq, size, r.inclusion.map(unhex), root);
+    add(ok, (lang==="el"?"Εγγραφή ":"Record ")+r.seq+": "+(lang==="el"?"ανήκει στο δέντρο που υπογράφεται (απόδειξη συμμετοχής RFC 9162)":"belongs to the signed tree (RFC 9162 inclusion proof)"));
+  }
+  const pubB64 = pin || cp.log_public_key;
+  try{
+    const sigLine=note.slice(i+2).split("\n").find(l=>l.startsWith("— "));
+    const payload=unb64(sigLine.split(" ").pop());
+    const key=await crypto.subtle.importKey("raw", unb64(pubB64), {name:"Ed25519"}, false, ["verify"]);
+    const ok=await crypto.subtle.verify("Ed25519", key, payload.slice(4), enc.encode(body));
+    add(ok, lang==="el"?"Η ρίζα είναι υπογεγραμμένη από το κλειδί "+(pin?"που έδωσες":"του server (ΟΧΙ ανεξάρτητο)"):"The root is signed by the key "+(pin?"you provided":"given by the server (NOT independent)"));
+    if(!pin) add(null, lang==="el"?"Χωρίς κλειδί από άλλη διαδρομή, αυτό δεν αποδεικνύει ποιος τρέχει το log.":"Without a key obtained another way, this does not prove who runs the log.");
+  }catch(e){ add(null, lang==="el"?"Η υπογραφή δεν ελέγχθηκε (ο browser ίσως δεν υποστηρίζει Ed25519): "+e.message:"Signature not checked (this browser may not support Ed25519): "+e.message); }
+  S.vres=out; render();
+}
+
+/* ───────────── ledger, bundle, integrity ───────────── */
+async function integrity(){ await act(async()=>{ S.integ=await api("/v1/audit/integrity"); render(); }); }
+async function bundle(){ await act(async()=>{ const b=await api("/v1/audit/bundle",{blob:true}); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="omnios-evidence-"+S.ov.tenant.tenant+".zip"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),5000); }); }
+
+/* ───────────── rules and changes ───────────── */
+async function chgDecide(id,kind){ await act(async()=>{ await api("/v1/changes/"+id+"/"+kind,{method:"POST"}); toast(t("ok")); S.polText=null; await refresh(); }); }
+async function proposeKey(){
+  const g=id=>document.getElementById(id).value.trim(), csv=s=>s.split(",").map(x=>x.trim()).filter(Boolean);
+  await act(async()=>{ const r=await api("/v1/changes",{json:{kind:"principal.create",payload:{name:g("pk_name"),role:g("pk_role"),groups:csv(g("pk_groups")),permissions:csv(g("pk_perms"))}}}); S.newKey=r.key?{name:g("pk_name"),key:r.key}:null; toast(t("ok")); await refresh(); });
+}
+async function validatePolicy(){ await act(async()=>{ let d; try{ d=JSON.parse(document.getElementById("poltext").value); }catch(e){ return toast("JSON: "+e.message,true); } const r=await api("/v1/policy/validate",{json:d}); toast(r.errors.length? r.errors.join("; ") : t("valid"), r.errors.length>0); }); }
+async function proposePolicy(){ await act(async()=>{ let d; try{ d=JSON.parse(document.getElementById("poltext").value); }catch(e){ return toast("JSON: "+e.message,true); } await api("/v1/changes",{json:{kind:"policy.replace",payload:{doc:d}}}); toast(t("ok")); S.polText=null; await refresh(); }); }
+
+/* ───────────── views ───────────── */
+function help(k){ return `<details class="help" open><summary>${esc(lang==="el"?"Τι βλέπω;":"What am I looking at?")}</summary><p>${esc(t(k))}</p></details>`; }
+function vOver(){
+  const o=S.ov, role=S.me.role, c=o.counts||{}, pend=c.PENDING_APPROVAL||0, w=o.ledger.witnessed;
+  let todo = role==="approver" ? (pend? t("todo_approver").replace("{n}",pend) : t("nothing")) : t("todo_"+role);
+  const cnt = Object.entries(c).map(([k,v])=>`<div>${stat(k)} <b>${v}</b></div>`).join("") || `<span class="mu">${t("none")}</span>`;
+  return `${help("hint_over")}
+  <div class="grid g4">
+   <div class="card kpi"><b>${esc(o.tenant.name||o.tenant.tenant)}</b><span>${t("tenant")} · ${esc(o.tenant.profile)} · ${t("quorum")}: ${esc(o.tenant.admin_quorum)}</span></div>
+   <div class="card kpi"><b>v${esc(o.policy.n)}</b><span>${t("policy")} · <span class="mono">${esc(short(o.policy.hash,12))}</span></span></div>
+   <div class="card kpi"><b>${esc(o.ledger.records)}</b><span>${t("ledger")} · ${t("root")}: <span class="mono">${esc(short(o.ledger.root,14))}</span></span></div>
+   <div class="card kpi"><b>${w? esc(w.witnesses.length)+" ✓":"–"}</b><span>${t("witnessed")}: ${w? esc(w.witnesses.join(", "))+" ("+w.size+")" : t("nowit")}</span></div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+   <div class="card"><h3 style="margin-top:0">${t("actions")}</h3><div class="grid" style="gap:6px">${cnt}</div></div>
+   <div class="card"><h3 style="margin-top:0">${t("todo")}</h3><p>${esc(todo)}</p>
+     <div class="small mu">${t("people")}: ${Object.entries(o.principals).map(([k,v])=>esc(roleName(k))+" "+v).join(" · ")} · ${t("pendingchg")}: ${o.pending_changes}</div></div>
+  </div>`;
+}
+function vActs(){
+  const role=S.me.role, tools=Object.keys(S.pol.policy.tools||{});
+  const list = S.acts.length ? S.acts.map(a=>`<tr class="row ${a.id===S.sel?"sel":""}" onclick="pick('${esc(a.id)}')"><td class="mono idc">${esc(a.id)}</td><td>${esc(a.tool)}${a.params&&a.params.amount_eur!==undefined?` <span class="mu small">€${esc(a.params.amount_eur)}</span>`:""}</td><td>${stat(a.status)}</td></tr>`).join("") : `<tr><td colspan="3" class="mu">${t("none")}</td></tr>`;
+  const filt = `<select onchange="S.filter=this.value;refresh()"><option value="">${t("all")}</option>${Object.keys(STATUS).map(s=>`<option value="${s}" ${S.filter===s?"selected":""}>${esc(lang==="el"?STATUS[s][1]:STATUS[s][2])}</option>`).join("")}</select>`;
+  const nw = role==="agent" ? `<div class="card" style="margin-bottom:12px"><b>${t("newreq")}</b>
+     <label>${t("tool")}</label><select id="ntool" onchange="fillSample()">${tools.map(x=>`<option>${esc(x)}</option>`).join("")}</select>
+     <label>${t("params")}</label><textarea id="nparams" style="min-height:70px">${esc(SAMPLE[tools[0]]||"{}")}</textarea>
+     <p><button class="btn pri" onclick="newRequest()">${t("send")}</button></p></div>` : "";
+  return `${help("hint_act")}<div class="split"><div>${nw}<div class="card"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><b style="flex:1">${t("actions")}</b>${filt}</div><table><tbody>${list}</tbody></table></div></div><div>${vDetail()}</div></div>`;
+}
+function vDetail(){
+  const a=S.selData; if(!a) return `<div class="card mu">${t("pick")}</div>`;
+  const role=S.me.role, need=a.approvals_required||0, got=(a.approvals||[]).length;
+  const bar = need? `<div class="bar">${Array.from({length:need},(_,i)=>`<i class="${i<got?"f":""}"></i>`).join("")}</div><div class="small">${got} ${t("of")} ${need} ${t("approvals").toLowerCase()}</div>` : "";
+  const apprs=(a.approvals||[]).map(x=>`<li><b>${esc(x.by)}</b> <span class="mu small">${fmt(x.at)}${x.comment?" · "+esc(x.comment):""}</span></li>`).join("");
+  let btn="";
+  if(role==="approver" && a.status==="PENDING_APPROVAL") btn+=`<label>${t("comment")}</label><input id="cmt"><p><button class="btn ok" onclick="decide('approve')">${t("approve")}</button> <button class="btn er" onclick="decide('reject')">${t("reject")}</button></p>`;
+  if(role==="agent" && a.status==="APPROVED" && a.execution_mode==="agent") btn+=`<p><button class="btn ok" onclick="report(true)">${t("reportok")}</button> <button class="btn" onclick="report(false)">${t("reportfail")}</button></p>`;
+  if(role==="agent" && a.status==="REPORTED_SUCCESS" && !["one_way_consequential","one_way_terminal"].includes(a.reversibility)) btn+=`<p><button class="btn" onclick="undo()">${t("undo")}</button></p>`;
+  if(role==="approver" && a.status==="EXECUTED" && a.execution_mode==="proxy") btn+=`<p><button class="btn" onclick="compensateProxy()">${t("undo")}</button></p>`;
+  const hist=(a.history||[]).map(h=>`<li>${fmt(h.at)} · ${esc(h.event)}${h.by?" · "+esc(h.by):""}</li>`).join("");
+  let ev="";
+  if(S.ev){
+    ev=`<table><thead><tr><th>${t("seq")}</th><th>${t("type")}</th><th>${t("time")}</th><th>hash</th></tr></thead><tbody>${S.ev.records.map(r=>{ let at=""; try{ at=fmt(JSON.parse(r.body).at);}catch(e){} return `<tr><td>${r.seq}</td><td>${esc(r.type)}</td><td class="small">${esc(at)}</td><td class="mono">${esc(short(r.leaf,16))}</td></tr>`;}).join("")}</tbody></table>
+    <label>${t("pinned")}</label><input id="pin" placeholder="base64 …">
+    <p><button class="btn pri" onclick="verifyEvidence()">${t("verify")}</button></p><div class="warnbox">${esc(t("vnote"))}</div>`;
+    if(S.vres) ev+=`<h3>${t("vtitle")}</h3>`+S.vres.map(x=>`<div class="check ${x.ok===true?"c-ok":x.ok===false?"c-er":"c-na"}"><b>${x.ok===true?"✓":x.ok===false?"✗":"!"}</b><span>${esc(x.msg)}</span></div>`).join("");
+  } else ev=`<p><button class="btn" onclick="loadEvidence()">${t("loadev")}</button></p>`;
+  return `<div class="card"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h1 style="margin:0">${esc(a.id)}</h1>${stat(a.status)}<span class="mu">${esc(a.tool)}</span></div>
+   <div class="grid g2 small" style="margin-top:10px"><div><span class="mu">${t("agent")}:</span> ${esc(a.agent)}</div><div><span class="mu">${t("risk")}:</span> ${esc(a.risk)}</div><div><span class="mu">${t("reversib")}:</span> ${esc(a.reversibility)}</div><div><span class="mu">${t("mode")}:</span> ${esc(a.execution_mode)}</div><div><span class="mu">${t("created")}:</span> ${fmt(a.created_at)}</div><div><span class="mu">${t("policyhash")}:</span> <span class="mono">${esc(short(a.policy_hash,12))}</span></div></div>
+   <h3>${t("params")}</h3><pre>${esc(JSON.stringify(a.params,null,2))}</pre>
+   ${(a.reasons||[]).length?`<h3>${t("reasons")}</h3><ul class="tl">${a.reasons.map(r=>`<li>${esc(r)}</li>`).join("")}</ul>`:""}
+   <h3>${t("approvals")}</h3>${bar}<ul class="tl">${apprs}</ul>${btn}
+   <h3>${t("history")}</h3><ul class="tl">${hist||"<li class=mu>–</li>"}</ul>
+   <h3>${t("evidence")}</h3>${ev}</div>`;
+}
+function vLedger(){
+  const o=S.ov, can=["approver","admin","auditor"].includes(S.me.role), w=o.ledger.witnessed;
+  const recs = S.recs ? S.recs.records.slice().reverse().map(r=>{ let at="",id=""; try{ const j=JSON.parse(r.body); at=fmt(j.at); id=(j.data&&j.data.id)||""; }catch(e){} return `<tr><td>${r.seq}</td><td>${esc(r.type)}</td><td class="small">${esc(id)}</td><td class="small">${esc(at)}</td><td class="mono">${esc(short(r.leaf,16))}</td></tr>`; }).join("") : "";
+  const integ = S.integ ? `<div class="${S.integ.ok?"keybox":"warnbox"}">${S.integ.ok? "✓ "+S.integ.records+" records, "+S.integ.checkpoints+" checkpoints" : "✗ "+esc((S.integ.problems||[]).join("; "))}</div>` : "";
+  return `${help("hint_led")}
+  <div class="grid g2"><div class="card"><div class="small"><span class="mu">${t("size")}:</span> ${o.ledger.records}</div><div class="small"><span class="mu">${t("root")}:</span> <span class="mono">${esc(o.ledger.root)}</span></div>
+   <div class="small"><span class="mu">${t("witnessed")}:</span> ${w? esc(w.witnesses.join(", "))+" · "+w.size : t("nowit")}</div>
+   ${["admin","auditor"].includes(S.me.role)? `<p><button class="btn" onclick="integrity()">${t("integrity")}</button> <button class="btn pri" onclick="bundle()">${t("dlbundle")}</button></p>`:""}${integ}</div></div>
+  ${can? `<h2>${t("records")}</h2><div class="card"><table><thead><tr><th>${t("seq")}</th><th>${t("type")}</th><th>id</th><th>${t("time")}</th><th>hash</th></tr></thead><tbody>${recs}</tbody></table></div>`:""}`;
+}
+function vRules(){
+  const role=S.me.role, tools=S.pol.policy.tools||{};
+  const rows=Object.entries(tools).map(([n,x])=>{ const ap=x.approvals||{}; return `<tr><td><b>${esc(n)}</b><div class="small mu">${esc(x.description||"")}</div></td><td class="small">${esc(x.permission||"")}</td><td class="small">${esc(x.reversibility)}</td><td>${esc(x.risk||"high")}</td><td class="small">${esc(ap.required??1)}${(ap.extra||[]).length?" (+"+ap.extra.length+" "+(lang==="el"?"κανόνες":"rules")+")":""}${(ap.groups||[]).length?"<br>"+esc(ap.groups.join(", ")):""}</td></tr>`; }).join("");
+  const admin = role==="admin";
+  const chg = (S.chg||[]).map(c=>`<tr><td class="mono idc">${esc(c.id)}</td><td>${esc(c.kind)}<div class="small mu">${esc(JSON.stringify(c.summary))}</div></td><td>${esc(c.by)}</td><td>${stat(c.status==="PENDING"?"PENDING_APPROVAL":c.status==="APPLIED"?"EXECUTED":"REJECTED")} <span class="small mu">${(c.approvals||[]).map(a=>esc(a.by)).join(", ")}</span></td><td>${admin&&c.status==="PENDING"? `<button class="btn ok" onclick="chgDecide('${esc(c.id)}','approve')">${t("approve")}</button> <button class="btn er" onclick="chgDecide('${esc(c.id)}','reject')">${t("reject")}</button>`:""}</td></tr>`).join("");
+  const pr = (S.princ||[]).map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(roleName(p.role))}</td><td class="small">${esc((p.groups||[]).join(", "))}</td><td class="small">${esc((p.permissions||[]).join(", "))}</td></tr>`).join("");
+  const nk = S.newKey ? `<div class="keybox">${t("keyonce")} <b>${esc(S.newKey.name)}</b><div class="mono">${esc(S.newKey.key)}</div></div>`:"";
+  return `${help("hint_rules")}
+  <h2 style="margin-top:0">${t("tools")} <span class="small mu">· v${S.pol.version.n} · <span class="mono">${esc(short(S.pol.policy_hash,12))}</span></span></h2>
+  <div class="card"><table><thead><tr><th>${t("tool")}</th><th>${t("perm")}</th><th>${t("reversib")}</th><th>${t("risk")}</th><th>${t("reqapp")}</th></tr></thead><tbody>${rows}</tbody></table></div>
+  ${["admin","auditor"].includes(role)? `<h2>${t("changes")}</h2><div class="card">${chg? `<table><thead><tr><th>id</th><th>${t("type")}</th><th>${t("proposer")}</th><th>${t("status")}</th><th></th></tr></thead><tbody>${chg}</tbody></table>`:`<span class="mu">${t("nochg")}</span>`}</div>
+   <h2>${t("principals")}</h2><div class="card"><table><thead><tr><th>${t("name")}</th><th>${t("role")}</th><th>${t("groups")}</th><th>${t("perm")}</th></tr></thead><tbody>${pr}</tbody></table></div>`:""}
+  ${admin? `${nk}<div class="grid g2"><div class="card"><b>${t("propkey")}</b>
+    <label>${t("name")}</label><input id="pk_name"><label>${t("role")}</label><select id="pk_role"><option>approver</option><option>agent</option><option>admin</option><option>auditor</option></select>
+    <label>${t("groups")}</label><input id="pk_groups"><label>${t("perms")}</label><input id="pk_perms"><p><button class="btn pri" onclick="proposeKey()">${t("propose")}</button></p></div>
+   <div class="card"><b>${t("proppol")}</b><textarea id="poltext" style="min-height:260px" oninput="S.polText=this.value">${esc(S.polText||"")}</textarea><p><button class="btn" onclick="validatePolicy()">${t("validate")}</button> <button class="btn pri" onclick="proposePolicy()">${t("propose")}</button></p></div></div>`:""}`;
+}
+function vGuide(){
+  const steps=[1,2,3,4,5,6].map(n=>`<div class="card"><b>${t("g"+n+"t")}</b><p style="margin:6px 0 0">${esc(t("g"+n))}</p></div>`).join("");
+  return `${help("hint_guide")}<div class="grid g2">${steps}</div><div class="warnbox" style="margin-top:14px"><b>${t("g7t")}</b><br>${esc(t("g7"))}</div>`;
+}
+const VCHIP = {allow:["s-ok","obs_allowed"], pending:["s-warn","obs_wait"], deny:["s-er","obs_refused"]};
+const vchip = d => `<span class="chip ${(VCHIP[d]||["s-mu",""])[0]}">${esc(t((VCHIP[d]||[0,"obs_verdict"])[1]))}</span>`;
+function vObs(){
+  const role=S.me.role;
+  const warn=`<div class="warnbox" style="margin-top:14px">${esc(t("obs_limits"))}</div>`;
+  if(role==="agent"){
+    const tools=Object.keys(S.pol.policy.tools||{}), mine=S.obsMine||[];
+    const rows=mine.length? mine.map(o=>`<tr><td class="mono idc">${esc(o.id)}</td><td>${esc(o.tool)}</td><td>${vchip(o.decision)}${o.decision==="pending"?` <span class="small mu">${o.approvals_required}</span>`:""}</td><td class="small">${esc((o.reasons||[]).slice(0,2).join("; "))}</td></tr>`).join("") : `<tr><td colspan="4" class="mu">${t("obs_none")}</td></tr>`;
+    return `${help("hint_obs")}<div class="split"><div class="card"><b>${t("obs_send")}</b>
+      <label>${t("tool")}</label><input id="ottool" list="otl" value="${esc(tools[0]||"")}" onchange="fillObsSample()"><datalist id="otl">${tools.map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
+      <label>${t("params")}</label><textarea id="otparams" style="min-height:70px">${esc(OBS_SAMPLE[tools[0]]||"{}")}</textarea><p><button class="btn pri" onclick="sendObs()">${t("send")}</button></p></div>
+      <div class="card tw"><b>${t("obs_mine")}</b><table><tbody>${rows}</tbody></table></div></div>${warn}`;
+  }
+  const s=S.obs;
+  if(!s || !s.total) return `${help("hint_obs")}<div class="card mu">${t("obs_none")}</div>${warn}`;
+  const tools=Object.entries(s.by_tool).map(([n,v])=>`<tr><td>${esc(n)}</td><td>${v.total}</td><td>${v.allow}</td><td>${v.pending}</td><td>${v.deny}</td></tr>`).join("");
+  const um=Object.entries(s.unmapped_tools).map(([n,c])=>`<li><b>${esc(n)}</b> <span class="mu">(${c})</span></li>`).join("");
+  const why=s.top_reasons.map(r=>`<li>${esc(r.reason)} <span class="mu">(${r.count})</span></li>`).join("");
+  const att=s.attention.map(a=>`<tr><td class="mono idc">${esc(a.id)}</td><td>${esc(a.tool)}</td><td>${vchip(a.decision)}${a.decision==="pending"?` <span class="small mu">${a.approvals_required}</span>`:""}</td><td class="small">${fmt(a.at)}</td><td class="small">${esc(a.reasons.join("; "))}</td></tr>`).join("");
+  return `${help("hint_obs")}
+   <div class="grid g4">
+    <div class="card kpi"><b>${s.total}</b><span>${t("obs_total")}</span></div>
+    <div class="card kpi"><b style="color:var(--ok)">${s.allow}</b><span>${t("obs_allow")}</span></div>
+    <div class="card kpi"><b style="color:var(--wn,#b45f06)">${s.pending}</b><span>${t("obs_pend")}</span></div>
+    <div class="card kpi"><b style="color:var(--er)">${s.deny}</b><span>${t("obs_deny")}</span></div></div>
+   <p><b>${Math.round(s.needs_review_share*100)}%</b> ${t("obs_share")}. <button class="btn" onclick="openObsReport()">${t("obs_report")}</button></p>
+   ${um?`<div class="warnbox"><b>${t("obs_unmapped")}</b><ul class="tl">${um}</ul></div>`:""}
+   ${s.unreadable_input?`<p class="small"><b>${s.unreadable_input}</b> ${t("obs_unread")}</p>`:""}
+   <h2>${t("obs_bytool")}</h2><div class="card tw"><table><thead><tr><th>${t("tool")}</th><th>Σ</th><th>${t("obs_allowed")}</th><th>${t("obs_wait")}</th><th>${t("obs_refused")}</th></tr></thead><tbody>${tools}</tbody></table></div>
+   <h2>${t("obs_why")}</h2><ul class="tl">${why||"<li class=mu>–</li>"}</ul>
+   <h2>${t("obs_first")}</h2><div class="card tw"><table><thead><tr><th>id</th><th>${t("tool")}</th><th>${t("obs_verdict")}</th><th>${t("obs_when")}</th><th>${t("reasons")}</th></tr></thead><tbody>${att||`<tr><td colspan=5 class=mu>–</td></tr>`}</tbody></table></div>${warn}`;
+}
+function render(){
+  const app=document.getElementById("app"); document.documentElement.lang=lang;
+  if(!S.me){
+    app.innerHTML=`<div class="login"><h1>OmniOS</h1><p class="mu">${t("appsub")}</p>
+     <div class="card"><label>${t("keyph")}</label><input id="kin" type="password" autocomplete="off" onkeydown="if(event.key==='Enter')login(this.value)"><p><button class="btn pri" onclick="login(document.getElementById('kin').value)">${t("enter")}</button> <button class="btn" onclick="setLang()">${t("lang")}</button></p><p class="small mu">${t("loginhelp")}</p></div>
+     ${S.demo.length?`<h3>${t("demokeys")}</h3><div class="demo">${S.demo.map((d,i)=>`<button class="btn" onclick="login(S.demo[${i}].key)">${esc(d.label||d.name)}</button>`).join("")}</div>`:""}</div>`;
+    return;
+  }
+  const tabs=[["over","t_over"],["act","t_act"],["led","t_led"],["rules","t_rules"],["obs","t_obs"],["guide","t_guide"]];
+  const view = {over:vOver, act:vActs, led:vLedger, rules:vRules, obs:vObs, guide:vGuide}[S.tab]();
+  app.innerHTML=`<header><span class="logo">OmniOS<small>${t("appsub")}</small></span><span class="sp"></span>
+    ${S.demo.length?`<span class="demo">${S.demo.map((d,i)=>`<button class="btn ${d.key===S.key?"pri":""}" onclick="login(S.demo[${i}].key)">${esc(d.label||d.name)}</button>`).join("")}</span>`:""}
+    <span class="chip s-ac">${esc(S.me.name)} · ${esc(roleName(S.me.role))}${S.me.groups&&S.me.groups.length?" · "+esc(S.me.groups.join(",")):""}</span>
+    <button class="btn" onclick="setLang()">${t("lang")}</button><button class="btn" onclick="logout()">${t("logout")}</button></header>
+   <nav>${tabs.map(([k,l])=>`<button class="${S.tab===k?"on":""}" onclick="go('${k}')">${t(l)}${k==="act"&&S.ov?` (${(S.ov.counts||{}).PENDING_APPROVAL||0})`:""}</button>`).join("")}<span class="sp"></span><button class="btn" onclick="act(refresh)">↻</button></nav>
+   <main>${view}</main>`;
+}
+async function go(tab){ S.tab=tab; await act(async()=>{ if(tab==="led") await loadLedger(true); if(tab==="rules") await loadRules(true); if(tab==="obs") await loadObs(true); render(); }); }
+function setLang(){ lang = lang==="el"?"en":"el"; try{ localStorage.setItem("omnios_lang",lang); }catch(e){} render(); }
+
+/* ───────────── start ───────────── */
+(async function(){
+  await tryDemo();
+  let k=null; try{ k=sessionStorage.getItem("omnios_key"); }catch(e){}
+  if(k) await login(k); else render();
+  setInterval(()=>{ if(S.me && S.tab!=="rules" && document.visibilityState==="visible" && !document.activeElement?.matches("input,textarea,select") && !(document.getElementById("cmt")||{}).value) refresh().catch(()=>{}); }, 6000);
+})();
+</script>
+</body>
+</html>

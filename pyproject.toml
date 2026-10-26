@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omnios"
+version = "2.0.0"
+description = "Make AI agents ask before they act, and keep a record nobody can quietly edit: rules, four-eyes approvals, a signed append-only log and offline-verifiable evidence."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "LicenseRef-Proprietary"
+license-files = ["LICENSE"]
+keywords = ["ai-agents", "approvals", "audit", "transparency-log", "evidence", "governance"]
+classifiers = ["Programming Language :: Python :: 3", "Intended Audience :: Developers", "Topic :: Security", "Development Status :: 3 - Alpha"]
+dependencies = ["fastapi>=0.110", "uvicorn>=0.29", "cryptography>=42", "pydantic>=2", "pyyaml>=6"]
+
+[project.optional-dependencies]
+test = ["httpx>=0.27"]
+
+[project.urls]
+Homepage = "https://github.com/ntinosgkiou-code/omnios"
+Issues = "https://github.com/ntinosgkiou-code/omnios/issues"
+Related = "https://github.com/ntinosgkiou-code/agentdryrun"
+
+[project.scripts]
+omnios = "omnios.cli:main"
+
+[tool.setuptools]
+packages = ["omnios"]
+
+[tool.setuptools.package-data]
+omnios = ["templates/*.json", "assess_data/*.yaml", "ui/*.html"]

@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: build the image
         run: docker build -t omnios:ci .
-      - name: smoke test: it starts and answers /health
+      - name: smoke test (it starts and answers /health)
         run: |
           docker run -d --name omnios -p 8000:8000 -v "$RUNNER_TEMP/omnios-data:/data" omnios:ci
           for i in $(seq 1 30); do

@@ -1,6 +1,6 @@
 # agentdryrun Gateway (codename OmniOS)
 
-![status](https://img.shields.io/badge/status-draft%2C%20never%20used%20with%20a%20real%20customer-orange)
+![status](https://img.shields.io/badge/status-portfolio%20project%2C%20development%20paused-lightgrey)
 [![tests](https://github.com/ntinosgkiou-code/omnios/actions/workflows/tests.yml/badge.svg)](https://github.com/ntinosgkiou-code/omnios/actions/workflows/tests.yml)
 ![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
 ![license](https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey)
@@ -17,16 +17,21 @@ The Gateway answers all three. It sits between the agent and the systems it acts
 
 *Real output of one command (`python -m omnios demo`), shortened. All data is invented.*
 
-> **Status: draft. Source published for reading, evaluation and review; never run with a real agent, bank or customer.** 175 automated tests pass and a full rehearsal runs end to end, but nothing is deployed and nothing has had an external security review. Read [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md) before you say anything about this to anyone: it lists what is **not** proven.
+> **Status: portfolio project; development paused in October 2026.** The source is published for reading and review. It has never run with a real agent, bank or customer. The 175 automated tests run (1 skipped) and a full rehearsal runs end to end, but nothing is deployed and nothing has had an external security review. [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md) lists what is **not** proven.
 
 ---
 
-## Two things you can hand to someone today
+## What this project demonstrates
 
-1. **An activity-and-approvals report for the client of an agent you built.** Observe mode judges what the agent did against the client's rules and produces one page: what it did, what would have needed a human, what would have been refused. Use it to answer "what is the agent doing for me?" before the client asks.
-2. **An evidence pack for an insurer, auditor or customer.** One zip with the approvals and the signed log that they check offline, with a public key they got another way, to answer "who approved this, and was the record changed afterwards?" at a renewal or audit.
+A complete, tested system built by one person (with AI coding tools), around one question: *how do you prove what a software agent did, and who allowed it, to someone who does not trust you?*
 
-Both are outputs of what the Gateway already does. **Neither has been used with a real customer yet**, and the approvals are not yet signed by the approvers themselves (gap G1 in [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md)). If you build agents for clients, or you are asked about AI agents at an insurance renewal, and want one of these made for a real agent log, [open an issue](https://github.com/ntinosgkiou-code/omnios/issues).
+- **Verifiable records:** an append-only transparency log per customer (Merkle tree per RFC 9162, Ed25519-signed checkpoints), and evidence packs that a third party verifies **offline** with a single stdlib-only Python file.
+- **Independent witnesses:** separate services with their own keys that cosign a checkpoint only if it extends the last one they saw, and refuse a rewritten history.
+- **Fail-closed policy engine:** per-customer JSON rules, limits per day, week or month, N distinct approvers, self-approval impossible, anything that cannot be evaluated goes to a human.
+- **Multi-tenant isolation:** each customer has its own keys, rules, log and counters; nothing is shared.
+- **Observe mode:** judge an agent's past actions against rules without blocking anything.
+- **Product surface:** FastAPI service, browser UI for approvers and auditors, a Python SDK (`@gw.governed(...)`), a CLI for every operation, Docker image, CI.
+- **Honest engineering:** the known gaps are written down with severity in [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md), not hidden.
 
 ---
 
@@ -64,7 +69,7 @@ Tested on Python 3.11 and 3.12, on Linux and Windows (see the badge and `.github
 
 ```bash
 pip install -r requirements.txt          # fastapi, uvicorn, cryptography, pydantic, pyyaml
-python run_tests.py                      # 175 tests, about a minute (Windows: the runner sets PYTHONUTF8=1 for you)
+python run_tests.py                      # 175 tests, a few minutes (Windows: the runner sets PYTHONUTF8=1 for you)
 python -m omnios demo                    # two customers, approvals, an edited pack, a rewritten log, witnesses
 python -m omnios ui-demo                 # the browser UI with a ready-made demo customer (http://127.0.0.1:8765/ui)
 ```
@@ -145,7 +150,7 @@ Full design: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). Bundle format: [`do
 
 ## Who it is for, and who it is not
 
-**For** a team that runs AI agents with real tool access (payments, customer records, deployments) and has to answer an insurer, an auditor or a customer: *how do you prove what the agent did, and who approved it?* The first conversation is observe mode on the agent's own log, because it needs no change to the agent and blocks nothing.
+**Designed for** a team that runs AI agents with real tool access (payments, customer records, deployments) and has to answer an insurer, an auditor or a customer: *how do you prove what the agent did, and who approved it?* The natural first step is observe mode on the agent's own log, because it needs no change to the agent and blocks nothing.
 
 **Not for** you if write-once storage plus a separate security team already satisfies your auditor: object lock stops deletion, but says nothing about order, completeness or whether the approval rules were followed. This is for the case where a **third party must be able to check without trusting you or us.**
 
@@ -181,11 +186,11 @@ The complete list, with severity and what to do about each, is [`docs/KNOWN-LIMI
 
 ---
 
-## Roadmap
+## Roadmap (if development resumes)
 
-In this order, and only as a first design partner makes each one real:
+In this order, and only when a real user makes each one necessary:
 
-1. A first design partner with a real agent (everything built without one is a guess).
+1. A first real user with a real agent (everything built without one is a guess).
 2. Approver-signed approvals (passkeys or Ed25519) so a record carries the human's own signature (G1).
 3. Recovery of a lost admin key and reconciliation after a crash (G2, G3).
 4. An external security review before real money (G11).
@@ -203,9 +208,9 @@ LICENSE, SECURITY.md, CONTRIBUTING.md, CHANGELOG.md, ROADMAP.md   how it is gove
 Dockerfile, pyproject.toml, .github/   container, packaging and CI
 ```
 
-## Work with me
+## About this project
 
-I am looking for **two or three design partners**: teams that run AI agents on money, customer or data flows and are willing to try observe mode on their own agent's log. You report what the agent does, you get the report and, if you want, a signed record. To talk, open an issue titled `design partner` in this repository (no personal details needed).
+Built by [ntinosgkiou-code](https://github.com/ntinosgkiou-code) in Athens as a portfolio and engineering project. Development is paused. Questions and security reports are welcome through [issues](https://github.com/ntinosgkiou-code/omnios/issues) and [`SECURITY.md`](SECURITY.md).
 
 ## License
 

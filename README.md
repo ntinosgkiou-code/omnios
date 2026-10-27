@@ -21,6 +21,15 @@ The Gateway answers all three. It sits between the agent and the systems it acts
 
 ---
 
+## Two things you can hand to someone today
+
+1. **An activity-and-approvals report for the client of an agent you built.** Observe mode judges what the agent did against the client's rules and produces one page: what it did, what would have needed a human, what would have been refused. Use it to answer "what is the agent doing for me?" before the client asks.
+2. **An evidence pack for an insurer, auditor or customer.** One zip with the approvals and the signed log that they check offline, with a public key they got another way, to answer "who approved this, and was the record changed afterwards?" at a renewal or audit.
+
+Both are outputs of what the Gateway already does. **Neither has been used with a real customer yet**, and the approvals are not yet signed by the approvers themselves (gap G1 in [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md)). If you build agents for clients, or you are asked about AI agents at an insurance renewal, and want one of these made for a real agent log, [open an issue](https://github.com/ntinosgkiou-code/omnios/issues).
+
+---
+
 ## Where it fits
 
 | | **agentdryrun** (free, open) | **Gateway** (this repository, source-available) |

@@ -2,6 +2,8 @@
 
 ![status](https://img.shields.io/badge/status-portfolio%20project%2C%20development%20paused-lightgrey)
 [![tests](https://github.com/ntinosgkiou-code/omnios/actions/workflows/tests.yml/badge.svg)](https://github.com/ntinosgkiou-code/omnios/actions/workflows/tests.yml)
+[![CodeQL](https://github.com/ntinosgkiou-code/omnios/actions/workflows/codeql.yml/badge.svg)](https://github.com/ntinosgkiou-code/omnios/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ntinosgkiou-code/omnios/badge)](https://scorecard.dev/viewer/?uri=github.com/ntinosgkiou-code/omnios)
 ![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
 ![license](https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey)
 
@@ -90,6 +92,10 @@ python run_tests.py                      # 175 tests, a few minutes (Windows: th
 python -m omnios demo                    # two customers, approvals, an edited pack, a rewritten log, witnesses
 python -m omnios ui-demo                 # the browser UI with a ready-made demo customer (http://127.0.0.1:8765/ui)
 ```
+
+Prefer pip? `pip install git+https://github.com/ntinosgkiou-code/omnios` installs the library, the SDK and the `omnios` command (checked in a clean virtual environment on 2026-11-01). The demo, the UI demo and the tests live in the clone.
+
+**See the output first:** [a sample observe-mode report](https://ntinosgkiou-code.github.io/omnios/shadow-report.html) (invented data).
 
 The demo walks through, in one run: two customers on one platform; a 4,000 EUR payment that needs two different people; a 25,000 EUR payment refused for being over the ceiling; customer B unable to see customer A; a rule change that needs a second admin; an evidence pack verified offline; the same pack with one name edited, which fails; two witnesses on their own servers; and an operator who rewrites history, which both witnesses refuse. It finishes by telling you what it did **not** show: a real agent, a real bank, single sign-on, or an external security review.
 
@@ -238,8 +244,10 @@ omnios/templates/      rule templates              omnios/assess_data/   the Age
 sdk/                   Python SDK                  scripts/demo_platform.py   the end-to-end demo
 tests/                 175 tests, no network       docs/                 architecture, bundle spec, witness, operations, trust gaps
 docs/assets/demo.png   made by scripts/make_readme_assets.py from the real demo output
-LICENSE, SECURITY.md, CONTRIBUTING.md, CHANGELOG.md, ROADMAP.md   how it is governed and built, in public
-Dockerfile, pyproject.toml, .github/   container, packaging and CI
+LICENSE, NOTICE, CITATION.cff, SECURITY.md, CONTRIBUTING.md, CHANGELOG.md, ROADMAP.md   how it is governed and built, in public
+Dockerfile, pyproject.toml   container and packaging
+.github/              CI (tests, Docker, CodeQL, OpenSSF Scorecard), Dependabot, issue and PR templates
+docs/shadow-report.html   a sample observe-mode report (invented data)
 ```
 
 ## About this project

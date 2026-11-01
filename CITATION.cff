@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "OmniOS (agentdryrun Gateway): approvals, limits and a tamper-evident record for AI agents"
+type: software
+authors:
+  - alias: "ntinosgkiou-code"
+repository-code: "https://github.com/ntinosgkiou-code/omnios"
+version: 2.0.0
+date-released: 2026-10-26
+abstract: >-
+  A gateway between an AI agent and the systems it acts on: rules, limits and four-eyes approvals, a signed append-only log per
+  customer, and evidence packs that a third party verifies offline. Source-available prototype; never run with a real agent,
+  bank or customer.
+keywords:
+  - ai-agents
+  - approvals
+  - audit-trail
+  - transparency-log
+  - evidence

@@ -5,7 +5,8 @@
 - States plainly that no law requires a cryptographic record or an independent witness, so nobody is obliged to buy this, and that nobody has been shown to pay for it.
 - Prompt injection: the Gateway is a second layer, not a filter. Added an honest note on the free Microsoft and AWS tools (the Microsoft toolkit is MIT and multi-framework, not Azure-only).
 - The entry product is observe mode as an agent risk assessment (no credentials, nothing blocked); the proxy mode with customer keys comes only after an external security review.
-- No code was changed.
+- Repository hygiene that agentdryrun already had: CodeQL, OpenSSF Scorecard, Dependabot (actions, pip, docker), a pull request template, `CITATION.cff`, `NOTICE`, `.gitattributes`, and a sample observe-mode report (invented data) on the project page. `pip install git+https://github.com/ntinosgkiou-code/omnios` was checked in a clean virtual environment.
+- No code was changed. The licence is unchanged (all rights reserved).
 
 ## 2.0.0-draft (published 2026-10-26)  First public release of the source
 - The platform as it stood on 2026-10-16: rules engine with four-eyes approvals, one signed append-only log per customer, evidence bundles with an offline verifier, witnesses that refuse rewritten history, observe mode, browser UI, Python SDK, assessment kit and provisioning. 175 tests.

@@ -48,6 +48,23 @@ The split is deliberate: **the part you have to trust is the part you can read.*
 
 ---
 
+## Who asks for this, and what they ask
+
+This project does not sell "control" in the abstract. It produces evidence for questions that people already ask, inside budgets that already exist for them.
+
+| Who asks | What they ask | What the Gateway gives | What it does not give |
+|---|---|---|---|
+| **Auditor** (SOC 2, ISO 27001) | "Who authorised the agent's actions, and how do I know the record was not changed?" (questions around SOC 2 CC6.1-6.3, logical access, and CC7.2-7.3, monitoring) | Approvals and actions in a record that is checked offline | It does not make an audit pass and does not certify anything |
+| **Insurer** (underwriter) | "What human oversight and approval procedure do you have for your AI agents?" | Documentation of approvals and limits | No insurer has been shown to accept it; it does not secure coverage |
+| **Large customer** (due diligence) | "Prove what your agent did with our data." | An evidence pack they check on their own | It does not prove the actions were right |
+| **Regulator** (EU AI Act, high-risk obligations from 2 December 2027) | Logging (Article 12), human oversight (14), deployer logs (26) | Records that map to those points | The law does not require a cryptographic record or a witness; a plain log may meet the minimum |
+
+**The honest consequence:** because no law requires a cryptographic record or an independent witness, nobody is *obliged* to buy this. It is worth paying for only where a third party will not accept the operator's own log. Nobody has been shown to pay for it. This is not legal advice.
+
+**The entry product** is observe mode used as an *agent risk assessment*: you hand over a file of what the agent did, nothing is blocked, no credentials are shared, and you get a report of what would have needed approval, what would have been refused, and which tools have no rule at all. The Gateway holding a customer's keys (proxy mode) comes only after observation and after an external security review, which has not been done.
+
+---
+
 ## What you get
 
 | | |
@@ -154,7 +171,18 @@ Full design: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). Bundle format: [`do
 
 **Not for** you if write-once storage plus a separate security team already satisfies your auditor: object lock stops deletion, but says nothing about order, completeness or whether the approval rules were followed. This is for the case where a **third party must be able to check without trusting you or us.**
 
-It does **not** stop prompt injection, it does not make you compliant with any regulation, and it is not a certification.
+**Prompt injection.** The Gateway is not a prompt-injection filter and should not be used as one. Use a filter, and treat this as a second layer: if an agent is deceived, a rule outside the model (an amount limit, an allow-list of tools, approval by two people) still applies to whatever passes through the Gateway, and the record shows what was requested and what was approved. Whatever does not pass through it (for example in decision mode, where the agent keeps its credentials) is not protected. It does not make you compliant with any regulation and it is not a certification.
+
+**If you only need rules and approval inside one technology stack, use the free tools** (next section). This is for the case where a third party must check the record without trusting you.
+
+---
+
+## Free tools from the big vendors, honestly
+
+- **Microsoft Agent Governance Toolkit** (MIT, April 2026) works with several frameworks (LangChain, CrewAI, OpenAI Agents, AutoGen, Google ADK). It is not tied to Azure. [Microsoft's announcement](https://opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit/).
+- **Policy in Amazon Bedrock AgentCore** (generally available March 2026) is part of AWS AgentCore. [AWS announcement](https://aws.amazon.com/about-aws/whats-new/2026/03/policy-amazon-bedrock-agentcore-generally-available).
+
+Where this project may still have a place: (1) a record that a third party checks without trusting the operator, with independent witnesses; (2) checking of the *process* inside the record itself (distinct approvers, quorum); (3) one neutral proof format for teams that run agents on more than one cloud and model and must hand customers the same proof. **It has not been compared in detail with what those tools record, and it has not been shown that anyone will pay for it.**
 
 ---
 
@@ -176,6 +204,12 @@ The complete list, with severity and what to do about each, is [`docs/KNOWN-LIMI
 
 **Is this a blockchain?** No. It is a transparency log (the design behind Certificate Transparency), with witnesses instead of consensus.
 
+**If a plain log is legally enough, why pay?** For the legal minimum you do not need this. You need it when someone outside the company must trust the record: an auditor, an insurer, or a customer in a dispute. A log you write and keep yourself proves what you say; a record checked by independent witnesses can be checked by someone else. It has not yet been shown that this is worth money.
+
+**Does it stop prompt injection?** No. Use a filter and treat the Gateway as a second layer: it limits what a deceived agent can do when the action passes through it, and leaves a record of what happened.
+
+**Has it had an external security review?** No. 175 automated tests and a full rehearsal, but no penetration test. That is why the entry point is observe mode, which takes no credentials.
+
 **Why not just write logs to write-once storage?** See above: it does not prove order, completeness or that the approval rules were followed, and you still trust the cloud account.
 
 **Why is it not open source?** The source is published so it can be read, evaluated and reviewed. No license is granted yet: that is an irreversible decision and the commercial terms are not settled. The parts you must be able to trust are open under Apache-2.0 in [agentdryrun](https://github.com/ntinosgkiou-code/agentdryrun): the verifier, the witness, the rules language and the local dry run. See [`LICENSE`](LICENSE).
@@ -190,10 +224,10 @@ The complete list, with severity and what to do about each, is [`docs/KNOWN-LIMI
 
 In this order, and only when a real user makes each one necessary:
 
-1. A first real user with a real agent (everything built without one is a guess).
+1. A first real user with a real agent (everything built without one is a guess). The first thing to offer is observe mode as an agent risk assessment: no credentials, nothing blocked.
 2. Approver-signed approvals (passkeys or Ed25519) so a record carries the human's own signature (G1).
 3. Recovery of a lost admin key and reconciliation after a crash (G2, G3).
-4. An external security review before real money (G11).
+4. An external security review before any customer credentials go behind the Gateway (proxy mode) and before real money (G11).
 5. Single sign-on, alerts, and a small admin UI (G13).
 
 ## Repository map

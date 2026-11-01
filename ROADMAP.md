@@ -12,10 +12,10 @@ Honest status. Order of work, and only as a first design partner makes each item
 - [x] CI on Python 3.11 and 3.12 (Linux and Windows) and a Docker build with a smoke test
 
 ## Next
-- [ ] A first design partner with a real agent (G6)
+- [ ] A first design partner with a real agent (G6), starting with observe mode as an agent risk assessment (no credentials, nothing blocked)
 - [ ] Approver-signed approvals (G1)
 - [ ] Recovery of a lost admin key and reconciliation after a crash (G2, G3)
-- [ ] An external security review and dependency pinning (G11)
+- [ ] An external security review and dependency pinning (G11), before any customer credentials go behind the gate (proxy mode)
 - [ ] SSO, notifications, rate limiting (G5, G13)
 
 ## Not planned here

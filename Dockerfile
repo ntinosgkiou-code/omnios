@@ -1,5 +1,5 @@
 # Built and smoke-tested in CI (.github/workflows/docker.yml). Not hardened: see docs/KNOWN-LIMITS.md before using it with anything real.
-FROM python:3.12-slim
+FROM python:3.15-slim
 ENV PYTHONUNBUFFERED=1 PYTHONUTF8=1
 WORKDIR /app
 COPY requirements.txt .

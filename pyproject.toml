@@ -8,8 +8,8 @@ version = "2.0.0"
 description = "Make AI agents ask before they act, and keep a record nobody can quietly edit: rules, four-eyes approvals, a signed append-only log and offline-verifiable evidence."
 readme = "README.md"
 requires-python = ">=3.11"
-license = "LicenseRef-Proprietary"
-license-files = ["LICENSE"]
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
 keywords = ["ai-agents", "approvals", "audit", "transparency-log", "evidence", "governance"]
 classifiers = ["Programming Language :: Python :: 3", "Intended Audience :: Developers", "Topic :: Security", "Development Status :: 3 - Alpha"]
 dependencies = ["fastapi>=0.110", "uvicorn>=0.29", "cryptography>=42", "pydantic>=2", "pyyaml>=6"]

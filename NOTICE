@@ -1,5 +1,7 @@
 OmniOS (agentdryrun Gateway)
-Copyright (c) 2026 ntinosgkiou-code. All rights reserved. See LICENSE.
+Copyright 2026 ntinosgkiou-code
 
-The open parts (the offline verifier, the witness service, the rules language and the local dry run) are published separately in
-https://github.com/ntinosgkiou-code/agentdryrun under the Apache License 2.0. They are not covered by this repository's licence.
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+The offline verifier, the witness service, the rules language and the local dry run are also published separately in
+https://github.com/ntinosgkiou-code/agentdryrun under the same licence.

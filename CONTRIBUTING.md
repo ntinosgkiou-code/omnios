@@ -1,6 +1,6 @@
 # Contributing
 
-OmniOS is a **draft** and the source is published for reading, evaluation and review (see [`LICENSE`](LICENSE): no license to use or redistribute is granted yet, so please talk to me before sending code). Issues and review are very welcome.
+OmniOS is a **draft**, open source under the [Apache License 2.0](LICENSE). Development is paused, so replies can be slow. Issues, review and pull requests are welcome; for anything larger than a fix, open an issue first.
 
 ## Run it
 ```bash
@@ -16,6 +16,7 @@ python -m omnios demo               # the whole story in one run
 4. **Review [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md)** and tell me which gap you would not accept.
 
 ## Ground rules
+- Unless you state otherwise, a contribution you send is licensed under Apache-2.0, the same as the project (section 5 of the licence).
 - No secrets, no customer data, no real people or companies in examples or issues. Use invented data and say so.
 - A change in behaviour comes with a test. Say what a thing proves **and what it does not prove**; if a claim cannot be checked, do not write it.
 - Be specific: the command you ran, what you expected, what happened.

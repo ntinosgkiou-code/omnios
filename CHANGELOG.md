@@ -1,12 +1,18 @@
 # Changelog
 
+## Unreleased (2026-11-02)  Now open source (Apache-2.0)
+- `LICENSE` is the unmodified Apache License 2.0 text (replacing the all-rights-reserved notice); `NOTICE`, `pyproject.toml` (`Apache-2.0`) and `CITATION.cff` say the same. The README badge, FAQ, license section, `CONTRIBUTING.md`, the project page and `docs/KNOWN-LIMITS.md` (G15) no longer say source-available or all rights reserved.
+- Releases and copies published before this date were all rights reserved; the grant applies from now on and cannot be withdrawn for copies already made.
+- The licence covers the code, not the names OmniOS or agentdryrun. No warranty: no external security review, never run with a real customer.
+- No code was changed.
+
 ## Unreleased (2026-11-01)  Positioning and honesty update, documentation only
 - README, landing page and roadmap now say who asks for this (auditors, insurers, large customers, the EU AI Act) and what the Gateway does and does not give them, instead of describing "control and proof" in the abstract.
 - States plainly that no law requires a cryptographic record or an independent witness, so nobody is obliged to buy this, and that nobody has been shown to pay for it.
 - Prompt injection: the Gateway is a second layer, not a filter. Added an honest note on the free Microsoft and AWS tools (the Microsoft toolkit is MIT and multi-framework, not Azure-only).
 - The entry product is observe mode as an agent risk assessment (no credentials, nothing blocked); the proxy mode with customer keys comes only after an external security review.
 - Repository hygiene that agentdryrun already had: CodeQL, OpenSSF Scorecard, Dependabot (actions, pip, docker), a pull request template, `CITATION.cff`, `NOTICE`, `.gitattributes`, and a sample observe-mode report (invented data) on the project page. `pip install git+https://github.com/ntinosgkiou-code/omnios` was checked in a clean virtual environment.
-- No code was changed. The licence is unchanged (all rights reserved).
+- No code was changed.
 
 ## 2.0.0-draft (published 2026-10-26)  First public release of the source
 - The platform as it stood on 2026-10-16: rules engine with four-eyes approvals, one signed append-only log per customer, evidence bundles with an offline verifier, witnesses that refuse rewritten history, observe mode, browser UI, Python SDK, assessment kit and provisioning. 175 tests.

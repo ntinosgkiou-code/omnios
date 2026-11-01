@@ -5,7 +5,7 @@
 [![CodeQL](https://github.com/ntinosgkiou-code/omnios/actions/workflows/codeql.yml/badge.svg)](https://github.com/ntinosgkiou-code/omnios/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ntinosgkiou-code/omnios/badge)](https://scorecard.dev/viewer/?uri=github.com/ntinosgkiou-code/omnios)
 ![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
-![license](https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey)
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
 **Make AI agents ask before they act, and keep a record nobody can quietly edit.**
 
@@ -19,7 +19,7 @@ The Gateway answers all three. It sits between the agent and the systems it acts
 
 *Real output of one command (`python -m omnios demo`), shortened. All data is invented.*
 
-> **Status: portfolio project; development paused in October 2026.** The source is published for reading and review. It has never run with a real agent, bank or customer. The 175 automated tests run (1 skipped) and a full rehearsal runs end to end, but nothing is deployed and nothing has had an external security review. [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md) lists what is **not** proven.
+> **Status: portfolio project; development paused in October 2026.** The source is open under Apache-2.0. It has never run with a real agent, bank or customer. The 175 automated tests run (1 skipped) and a full rehearsal runs end to end, but nothing is deployed and nothing has had an external security review. [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md) lists what is **not** proven.
 
 ---
 
@@ -39,7 +39,7 @@ A complete, tested system built by one person (with AI coding tools), around one
 
 ## Where it fits
 
-| | **agentdryrun** (free, open) | **Gateway** (this repository, source-available) |
+| | **agentdryrun** (free, open) | **Gateway** (this repository, open source) |
 |---|---|---|
 | What it does | **Looks back.** Reads what an agent did and shows what your rules *would* have stopped. Read-only. | **Acts.** Refuses, waits for humans, executes through a proxy, writes the signed log. |
 | Changes anything? | No. A dry run. | Yes: it is the gate the agent goes through. |
@@ -218,7 +218,7 @@ The complete list, with severity and what to do about each, is [`docs/KNOWN-LIMI
 
 **Why not just write logs to write-once storage?** See above: it does not prove order, completeness or that the approval rules were followed, and you still trust the cloud account.
 
-**Why is it not open source?** The source is published so it can be read, evaluated and reviewed. No license is granted yet: that is an irreversible decision and the commercial terms are not settled. The parts you must be able to trust are open under Apache-2.0 in [agentdryrun](https://github.com/ntinosgkiou-code/agentdryrun): the verifier, the witness, the rules language and the local dry run. See [`LICENSE`](LICENSE).
+**Is it open source?** Yes, since 2 November 2026, under the [Apache License 2.0](LICENSE): you may use, change and redistribute it, including commercially, under the terms of that licence. It comes with no warranty, and that matters here: it has had no external security review and has never run with a real customer (see [`docs/KNOWN-LIMITS.md`](docs/KNOWN-LIMITS.md)). Before that date the repository was published all rights reserved; a licence that has been granted cannot be withdrawn for copies already made. The licence covers the code, not the names: it grants no right to use the names OmniOS or agentdryrun. The verifier, the witness, the rules language and the local dry run were already Apache-2.0 in [agentdryrun](https://github.com/ntinosgkiou-code/agentdryrun).
 
 **What is "OmniOS"?** The first name of this project. The free tool was renamed **agentdryrun** because OmniOS is also the name of an unrelated, actively released operating system (omnios.org). The Python package and the CLI of this repository are still called `omnios`; the evidence-bundle format identifier `omnios-evidence-bundle` and the `omnios/<tenant>` log origin stay as they are on purpose, because changing them would break signed bundles.
 
@@ -256,4 +256,4 @@ Built by [ntinosgkiou-code](https://github.com/ntinosgkiou-code) in Athens as a 
 
 ## License
 
-All rights reserved: the source is published for reading, evaluation and security review, and no license to use, copy, modify or distribute it is granted yet (see [`LICENSE`](LICENSE)). The open parts live in [agentdryrun](https://github.com/ntinosgkiou-code/agentdryrun) under Apache-2.0. Security reports: [`SECURITY.md`](SECURITY.md).
+[Apache License 2.0](LICENSE), copyright 2026 ntinosgkiou-code (see [`NOTICE`](NOTICE)). Provided as is, with no warranty. The verifier, the witness and the local dry run are in [agentdryrun](https://github.com/ntinosgkiou-code/agentdryrun) under the same licence. Security reports: [`SECURITY.md`](SECURITY.md).

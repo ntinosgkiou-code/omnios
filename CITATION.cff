@@ -7,9 +7,10 @@ authors:
 repository-code: "https://github.com/ntinosgkiou-code/omnios"
 version: 2.0.0
 date-released: 2026-10-26
+license: Apache-2.0
 abstract: >-
   A gateway between an AI agent and the systems it acts on: rules, limits and four-eyes approvals, a signed append-only log per
-  customer, and evidence packs that a third party verifies offline. Source-available prototype; never run with a real agent,
+  customer, and evidence packs that a third party verifies offline. Open-source prototype (Apache-2.0); never run with a real agent,
   bank or customer.
 keywords:
   - ai-agents
